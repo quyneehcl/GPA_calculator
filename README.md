@@ -25,15 +25,4 @@
 
 > Dữ liệu sẽ được lưu tự động trên trình duyệt, không cần đăng nhập.
 
----
 
-## ⚙️ Công nghệ sử dụng
-
-- HTML, CSS, JavaScript (tất cả là web tĩnh)
-- LocalStorage để lưu dữ liệu trên trình duyệt.
-
----
-
-## 🚀 Triển khai trên GitHub Pages
-
-1. Tạo
