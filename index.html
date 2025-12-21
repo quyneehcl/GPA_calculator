@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #f0f8ff;
+        --primary-blue: #a2d2ff;
+        --soft-blue: #caf0f8;
+        --deep-blue: #0077b6;
+        --cyan-blue: #90e0ef;
+        --text-dark: #3d5a80;
+    }
+
+    body {
+        font-family: 'Quicksand', sans-serif;
+        background-color: var(--bg-color);
+        background-image: radial-gradient(var(--primary-blue) 0.5px, transparent 0.5px);
+        background-size: 25px 25px;
+        color: var(--text-dark);
+        padding: 20px;
+        margin: 0;
+    }
+
+    .container { max-width: 900px; margin: auto; }
+
+    .final-gpa {
+        background: white;
+        padding: 20px;
+        border-radius: 25px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px rgba(162, 210, 255, 0.3);
+        border: 4px solid var(--primary-blue);
+        position: sticky;
+        top: 15px;
+        z-index: 100;
+    }
+    .final-gpa h2 { margin: 0; color: var(--deep-blue); font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; }
+    .gpa-display-group { display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 10px; }
+    .gpa-item { background: var(--soft-blue); padding: 8px 20px; border-radius: 15px; border: 2px dashed var(--primary-blue); min-width: 120px; }
+    .gpa-value { font-size: 1.8em; font-weight: 700; color: var(--deep-blue); display: block; }
+
+    .add-course-box {
+        background: white;
+        padding: 20px;
+        border-radius: 25px;
+        margin-bottom: 30px;
+        display: flex; gap: 15px; align-items: flex-end;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        flex-wrap: wrap;
+    }
+    .input-group { display: flex; flex-direction: column; flex: 1; min-width: 150px; }
+    label { font-weight: 700; font-size: 0.8em; color: var(--deep-blue); margin-bottom: 5px; margin-left: 5px; text-transform: uppercase; }
+    input { border: 2px solid #e0f2fe; border-radius: 12px; padding: 10px; font-family: 'Quicksand'; outline: none; transition: border-color 0.3s; }
+    input:focus { border-color: var(--primary-blue); }
+
+    .course-card {
+        background: white;
+        border-radius: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        border-left: 10px solid var(--primary-blue);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .course-header {
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background: #fff;
+        user-select: none;
+    }
+    .course-header:hover { background: #fdfefe; }
+    .course-title-group { display: flex; align-items: center; gap: 12px; }
+    .toggle-icon { font-size: 0.8em; transition: transform 0.3s; color: var(--primary-blue); }
+
+    .course-body { padding: 0 25px 25px 25px; display: block; }
+    .is-collapsed .course-body { display: none; }
+    .is-collapsed .toggle-icon { transform: rotate(-90deg); }
+
+    .course-stats {
+        display: flex; gap: 15px; margin-bottom: 15px;
+        background: #f0faff; padding: 12px; border-radius: 15px;
+        font-size: 0.9em; font-weight: 600; flex-wrap: wrap;
+    }
+
+    .task-category {
+        background: #fcfdfe; padding: 15px; border-radius: 15px;
+        margin-bottom: 15px; border: 1px solid #eef2f3; border-top: 4px solid var(--cyan-blue);
+    }
+
+    .task-item { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 8px; margin-top: 8px; }
+    .task-item input { padding: 5px; font-size: 0.9em; width: 100%; box-sizing: border-box; }
+
+    .btn { border: none; border-radius: 12px; padding: 10px 18px; cursor: pointer; font-family: 'Quicksand'; font-weight: 700; transition: 0.2s; }
+    .btn:active { transform: scale(0.95); }
+    .btn-primary { background: var(--primary-blue); color: white; }
+    .btn-success { background: var(--cyan-blue); color: var(--text-dark); margin-top: 5px; }
+    .btn-danger { background: #ffccd5; color: #c9184a; }
+    .btn-info { background: #bde0fe; color: #0077b6; }
+    .btn-small { padding: 5px 12px; font-size: 0.8em; }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="final-gpa">
+        <h2>Academic Results</h2>
+        <div class="gpa-display-group">
+            <div class="gpa-item">Current GPA <span class="gpa-value" id="main-gpa">0.000</span></div>
+            <div class="gpa-item">What-If GPA <span class="gpa-value" id="whatif-gpa" style="color:#00b4d8">0.000</span></div>
+        </div>
+        <p id="total-info" style="margin: 10px 0 0; font-size: 0.9em; color: #8e9aaf;">Welcome back</p>
+    </div>
+
+    <div class="add-course-box">
+        <div class="input-group">
+            <label>Course Name</label>
+            <input type="text" id="newCourseName" placeholder="e.g. Calculus, Physics...">
+        </div>
+        <div class="input-group" style="flex: 0.4; min-width: 80px;">
+            <label>Credits</label>
+            <input type="number" id="newCourseCredits" min="1" max="10" value="3">
+        </div>
+        <button class="btn btn-primary" onclick="addNewCourse()">Add Course</button>
+        <button class="btn btn-danger btn-small" onclick="clearAllData()">Reset All</button>
+    </div>
+
+    <div id="coursesContainer"></div>
+</div>
+
+<script>
+let courses = [];
+
+function percentToLetterGrade(p){
+    if(p>=89.5)return'A'; if(p>=84.5)return'A-'; if(p>=79.5)return'B+'; if(p>=74.5)return'B';
+    if(p>=69.5)return'B-'; if(p>=64.5)return'C+'; if(p>=59.5)return'C'; if(p>=54.5)return'C-';
+    if(p>=49.5)return'D+'; if(p>=44.5)return'D'; return'F';
+}
+function letterGradeToGPA(letter){
+    const map={'A':4,'A-':3.7,'B+':3.3,'B':3,'B-':2.7,'C+':2.3,'C':2,'C-':1.7,'D+':1.3,'D':1, 'D-':0.7,'F':0};
+    return map[letter]||0;
+}
+
+function saveData() { localStorage.setItem('gpa_tracker_data', JSON.stringify(courses)); }
+
+function loadData() {
+    const saved = localStorage.getItem('gpa_tracker_data');
+    if (saved) {
+        courses = JSON.parse(saved);
+        courses.forEach(course => {
+            renderCourseCard(course);
+            course.categories.forEach(cat => {
+                renderCategory(course.id, cat);
+                cat.tasks.forEach(task => renderTask(course.id, cat.id, task));
+            });
+        });
+        updateOverallGPA();
+    }
+}
+
+function clearAllData() {
+    if(confirm("Are you sure you want to clear all data?")) {
+        localStorage.removeItem('gpa_tracker_data');
+        location.reload();
+    }
+}
+
+function toggleCollapse(courseId) {
+    const course = courses.find(c => c.id === courseId);
+    if (course) {
+        course.isCollapsed = !course.isCollapsed;
+        document.getElementById(`course-${courseId}`).classList.toggle('is-collapsed', course.isCollapsed);
+        saveData();
+    }
+}
+
+function addNewCourse(){
+    const nameInput = document.getElementById('newCourseName');
+    const creditInput = document.getElementById('newCourseCredits');
+    const name = nameInput.value.trim();
+    const credits = parseFloat(creditInput.value);
+
+    if(!name || isNaN(credits)) {
+        alert("Please enter a course name and credit value.");
+        return;
+    }
+
+    const course = { id: Date.now(), name: name, credits: credits, categories: [], isCollapsed: false };
+    courses.push(course);
+    renderCourseCard(course);
+    updateOverallGPA();
+    nameInput.value = '';
+}
+
+function updateCourse(courseId, field, value) {
+    const course = courses.find(c => c.id === courseId);
+    if (course) {
+        course[field] = (field === 'credits') ? (parseFloat(value) || 0) : value;
+        updateOverallGPA();
+    }
+}
+
+function renderCourseCard(course){
+    const container = document.getElementById('coursesContainer');
+    const div = document.createElement('div');
+    div.className = `course-card ${course.isCollapsed ? 'is-collapsed' : ''}`;
+    div.id = `course-${course.id}`;
+    
+    div.innerHTML = `
+        <div class="course-header" onclick="toggleCollapse(${course.id})">
+            <div class="course-title-group">
+                <span class="toggle-icon">▼</span>
+                <input type="text" value="${course.name}" 
+                    onclick="event.stopPropagation()" 
+                    oninput="updateCourse(${course.id}, 'name', this.value)" 
+                    style="border:none; border-bottom:2px solid var(--cyan-blue); font-weight:700; color:var(--deep-blue); font-size:1.1em; background:transparent; width:auto;">
+            </div>
+            <div onclick="event.stopPropagation()" style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:0.7em; font-weight:700; color:#888;">CREDITS:</span>
+                <input type="number" value="${course.credits}" 
+                    oninput="updateCourse(${course.id}, 'credits', this.value)"
+                    style="width:35px; border:none; background:var(--soft-blue); font-weight:700; text-align:center; border-radius:8px; padding:4px;">
+                <button class="btn btn-danger btn-small" onclick="removeCourse(${course.id})">Delete</button>
+            </div>
+        </div>
+        <div class="course-body">
+            <div class="course-stats">
+                <span>Overall: <span class="course-percent">0</span>%</span> | 
+                <span>Grade: <span class="course-letter">-</span></span> | 
+                <span>GPA: <span class="course-gpa">0</span></span>
+                <span style="margin-left:auto; color:var(--deep-blue);">What-If: <span class="course-gpa-if">0</span></span>
+            </div>
+            <div class="categories-container"></div>
+            <button class="btn btn-success btn-small" onclick="addCategory(${course.id})">+ Add Component</button>
+        </div>
+    `;
+    container.prepend(div);
+}
+
+function addCategory(courseId){
+    const cname = prompt('Component name (e.g. Midterm, Final):');
+    const weight = parseFloat(prompt('Weight % (e.g. 30):'));
+    if(!cname || isNaN(weight)) return;
+
+    const course = courses.find(c => c.id === courseId);
+    const cat = { id: Date.now(), name: cname, weight: weight, tasks: [] };
+    course.categories.push(cat);
+    renderCategory(courseId, cat);
+    updateOverallGPA();
+}
+
+function renderCategory(courseId, cat){
+    const courseDiv = document.getElementById(`course-${courseId}`);
+    const container = courseDiv.querySelector('.categories-container');
+    const div = document.createElement('div');
+    div.className = 'task-category';
+    div.id = `cat-${cat.id}`;
+    div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+            <span style="font-weight:700; color:var(--deep-blue); font-size:0.9em;">${cat.name} (${cat.weight}%) - <span class="cat-percent">0</span>%</span>
+            <div>
+                <button class="btn btn-info btn-small" onclick="addTask(${courseId},${cat.id})">+ Score</button>
+                <button class="btn btn-danger btn-small" onclick="removeCategory(${courseId},${cat.id})">Remove</button>
+            </div>
+        </div>
+        <div class="tasks-container"></div>
+    `;
+    container.appendChild(div);
+}
+
+function addTask(courseId, catId){
+    const course = courses.find(c => c.id === courseId);
+    const cat = course.categories.find(c => c.id === catId);
+    const task = { id: Date.now(), name: '', score: 0, maxScore: 100, scoreIf: null };
+    cat.tasks.push(task);
+    renderTask(courseId, catId, task);
+    updateOverallGPA();
+}
+
+function renderTask(courseId, catId, task){
+    const catDiv = document.getElementById(`cat-${catId}`);
+    const container = catDiv.querySelector('.tasks-container');
+    const div = document.createElement('div');
+    div.className = 'task-item';
+    div.id = `task-${task.id}`;
+    div.innerHTML = `
+        <input type="text" placeholder="Task name" value="${task.name}" oninput="updateTask(${courseId},${catId},${task.id},'name',this.value)">
+        <input type="number" placeholder="Score" value="${task.score}" oninput="updateTask(${courseId},${catId},${task.id},'score',this.value)">
+        <input type="number" placeholder="Max" value="${task.maxScore}" oninput="updateTask(${courseId},${catId},${task.id},'maxScore',this.value)">
+        <input type="number" placeholder="What If?" value="${task.scoreIf??''}" oninput="updateTask(${courseId},${catId},${task.id},'scoreIf',this.value)">
+        <button class="btn btn-danger btn-small" onclick="removeTask(${courseId},${catId},${task.id})">X</button>
+    `;
+    container.appendChild(div);
+}
+
+function updateTask(courseId, catId, taskId, field, value) {
+    const course = courses.find(c => c.id === courseId);
+    const cat = course.categories.find(c => c.id === catId);
+    const task = cat.tasks.find(t => t.id === taskId);
+    if (field === 'scoreIf') task[field] = value !== '' ? parseFloat(value) : null;
+    else if (field === 'name') task[field] = value;
+    else task[field] = parseFloat(value) || 0;
+    updateOverallGPA();
+}
+
+function updateOverallGPA(){
+    let totalPoints = 0, totalPointsIf = 0, totalCredits = 0;
+
+    courses.forEach(c => {
+        let courseWsum = 0, courseWsumIf = 0, totalWeight = 0;
+        c.categories.forEach(cat => {
+            let taskSum = 0, taskSumIf = 0, taskMax = 0;
+            cat.tasks.forEach(t => {
+                taskSum += t.score;
+                taskSumIf += (t.scoreIf !== null) ? t.scoreIf : t.score;
+                taskMax += t.maxScore;
+            });
+            const catScore = taskMax > 0 ? (taskSum / taskMax) * 100 : 0;
+            const catScoreIf = taskMax > 0 ? (taskSumIf / taskMax) * 100 : 0;
+            const catEl = document.getElementById(`cat-${cat.id}`);
+            if(catEl) catEl.querySelector('.cat-percent').innerText = catScore.toFixed(1);
+            
+            courseWsum += catScore * (cat.weight / 100);
+            courseWsumIf += catScoreIf * (cat.weight / 100);
+            totalWeight += cat.weight;
+        });
+
+        const finalPerc = totalWeight > 0 ? (courseWsum / (totalWeight/100)) : 0;
+        const finalPercIf = totalWeight > 0 ? (courseWsumIf / (totalWeight/100)) : 0;
+        const gpa = letterGradeToGPA(percentToLetterGrade(finalPerc));
+        const gpaIf = letterGradeToGPA(percentToLetterGrade(finalPercIf));
+
+        totalPoints += gpa * c.credits;
+        totalPointsIf += gpaIf * c.credits;
+        totalCredits += c.credits;
+
+        const card = document.getElementById(`course-${c.id}`);
+        if(card) {
+            card.querySelector('.course-percent').innerText = finalPerc.toFixed(1);
+            card.querySelector('.course-letter').innerText = percentToLetterGrade(finalPerc);
+            card.querySelector('.course-gpa').innerText = gpa.toFixed(2);
+            card.querySelector('.course-gpa-if').innerText = gpaIf.toFixed(2);
+        }
+    });
+
+    const finalGPAVal = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+    const finalGPAIfVal = totalCredits > 0 ? (totalPointsIf / totalCredits) : 0;
+
+    document.getElementById('main-gpa').innerText = finalGPAVal.toFixed(3);
+    document.getElementById('whatif-gpa').innerText = finalGPAIfVal.toFixed(3);
+    document.getElementById('total-info').innerText = `Courses: ${courses.length} | Credits: ${totalCredits}`;
+    saveData();
+}
+
+function removeCourse(id){ courses=courses.filter(c=>c.id!==id); const el=document.getElementById(`course-${id}`); if(el)el.remove(); updateOverallGPA(); }
+function removeCategory(cId, catId){ 
+    const c = courses.find(x=>x.id===cId); 
+    c.categories = c.categories.filter(x=>x.id!==catId); 
+    const el=document.getElementById(`cat-${catId}`); if(el)el.remove(); 
+    updateOverallGPA(); 
+}
+function removeTask(cId, catId, tId){
+    const c = courses.find(x=>x.id===cId);
+    const cat = c.categories.find(x=>x.id===catId);
+    cat.tasks = cat.tasks.filter(x=>x.id!==tId);
+    const el=document.getElementById(`task-${tId}`); if(el)el.remove();
+    updateOverallGPA();
+}
+
+window.onload = loadData;
+</script>
+</body>
+</html>
