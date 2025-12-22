@@ -3,380 +3,311 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPA Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<title>GPA Tracker Cloud - Final Smooth</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     :root {
-        --bg-color: #f0f8ff;
-        --primary-blue: #a2d2ff;
-        --soft-blue: #caf0f8;
-        --deep-blue: #0077b6;
-        --cyan-blue: #90e0ef;
-        --text-dark: #3d5a80;
+        --bg-blue: #f4f9ff;
+        --accent-blue: #a2d2ff;
+        --deep-blue: #4a90e2;
+        --soft-blue: #e1f0ff;
+        --white: #ffffff;
+        --text-main: #2d4156;
+        --text-sub: #7a8ba0;
+        --danger: #ffccd5;
+        --danger-text: #c9184a;
+        --shadow: 0 10px 30px rgba(162, 210, 255, 0.2);
     }
 
     body {
         font-family: 'Quicksand', sans-serif;
-        background-color: var(--bg-color);
-        background-image: radial-gradient(var(--primary-blue) 0.5px, transparent 0.5px);
-        background-size: 25px 25px;
-        color: var(--text-dark);
-        padding: 20px;
-        margin: 0;
+        background-color: var(--bg-blue);
+        background-image: radial-gradient(#d6eaff 1px, transparent 1px);
+        background-size: 20px 20px;
+        color: var(--text-main);
+        padding: 40px 20px; margin: 0;
     }
 
-    .container { max-width: 900px; margin: auto; }
+    .container { max-width: 1000px; margin: auto; }
 
-    .final-gpa {
-        background: white;
-        padding: 20px;
-        border-radius: 25px;
-        text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 10px 25px rgba(162, 210, 255, 0.3);
-        border: 4px solid var(--primary-blue);
-        position: sticky;
-        top: 15px;
-        z-index: 100;
+    .card {
+        background: var(--white); border-radius: 30px; padding: 30px;
+        box-shadow: var(--shadow); margin-bottom: 30px; border: 2px solid var(--soft-blue);
     }
-    .final-gpa h2 { margin: 0; color: var(--deep-blue); font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; }
-    .gpa-display-group { display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 10px; }
-    .gpa-item { background: var(--soft-blue); padding: 8px 20px; border-radius: 15px; border: 2px dashed var(--primary-blue); min-width: 120px; }
-    .gpa-value { font-size: 1.8em; font-weight: 700; color: var(--deep-blue); display: block; }
-
-    .add-course-box {
-        background: white;
-        padding: 20px;
-        border-radius: 25px;
-        margin-bottom: 30px;
-        display: flex; gap: 15px; align-items: flex-end;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        flex-wrap: wrap;
-    }
-    .input-group { display: flex; flex-direction: column; flex: 1; min-width: 150px; }
-    label { font-weight: 700; font-size: 0.8em; color: var(--deep-blue); margin-bottom: 5px; margin-left: 5px; text-transform: uppercase; }
-    input { border: 2px solid #e0f2fe; border-radius: 12px; padding: 10px; font-family: 'Quicksand'; outline: none; transition: border-color 0.3s; }
-    input:focus { border-color: var(--primary-blue); }
-
-    .course-card {
-        background: white;
-        border-radius: 25px;
-        margin-bottom: 20px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-        border-left: 10px solid var(--primary-blue);
-        overflow: hidden;
-        transition: all 0.3s ease;
+    .auth-container { text-align: center; }
+    .auth-container input {
+        padding: 12px 20px; border-radius: 15px; border: 2px solid var(--soft-blue);
+        margin: 5px; outline: none; width: 220px; font-family: 'Quicksand';
     }
 
-    .course-header {
-        padding: 15px 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        background: #fff;
-        user-select: none;
+    .result-card { border: 2px solid var(--accent-blue); text-align: center; }
+    .gpa-group { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0; }
+    .gpa-box {
+        background: var(--soft-blue); padding: 20px; border-radius: 20px;
+        min-width: 160px; border: 2px dashed var(--accent-blue);
     }
-    .course-header:hover { background: #fdfefe; }
-    .course-title-group { display: flex; align-items: center; gap: 12px; }
-    .toggle-icon { font-size: 0.8em; transition: transform 0.3s; color: var(--primary-blue); }
+    .gpa-box h4 { margin: 0 0 5px 0; color: var(--text-sub); font-size: 0.8em; }
+    .gpa-box span { font-size: 2em; font-weight: 700; color: var(--deep-blue); }
 
-    .course-body { padding: 0 25px 25px 25px; display: block; }
-    .is-collapsed .course-body { display: none; }
-    .is-collapsed .toggle-icon { transform: rotate(-90deg); }
-
-    .course-stats {
-        display: flex; gap: 15px; margin-bottom: 15px;
-        background: #f0faff; padding: 12px; border-radius: 15px;
-        font-size: 0.9em; font-weight: 600; flex-wrap: wrap;
+    .add-box { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+    .input-wrapper { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
+    .input-wrapper label { font-weight: 700; font-size: 0.75em; color: var(--deep-blue); margin: 0 0 8px 5px; }
+    .add-box input {
+        padding: 12px 18px; border-radius: 15px; border: 2px solid var(--soft-blue);
+        outline: none; font-family: 'Quicksand';
     }
 
-    .task-category {
-        background: #fcfdfe; padding: 15px; border-radius: 15px;
-        margin-bottom: 15px; border: 1px solid #eef2f3; border-top: 4px solid var(--cyan-blue);
+    .course-item { background: var(--white); border-radius: 25px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
+    .course-top { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .course-title { font-weight: 700; color: var(--deep-blue); font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+    .course-title::before { content: '▼'; font-size: 0.7em; transition: 0.3s; }
+    .is-collapsed .course-title::before { transform: rotate(-90deg); }
+
+    .course-summary-bar {
+        background: var(--bg-blue); margin: 0 30px 20px; padding: 15px 25px; border-radius: 15px;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.9em; font-weight: 600;
     }
 
-    .task-item { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 8px; margin-top: 8px; }
-    .task-item input { padding: 5px; font-size: 0.9em; width: 100%; box-sizing: border-box; }
+    .category-section {
+        background: #fdfdfe; border: 1.5px solid #f0f4f8; border-radius: 20px;
+        padding: 20px; margin: 0 30px 20px;
+    }
+    .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .category-name { font-weight: 700; color: var(--deep-blue); }
 
-    .btn { border: none; border-radius: 12px; padding: 10px 18px; cursor: pointer; font-family: 'Quicksand'; font-weight: 700; transition: 0.2s; }
-    .btn:active { transform: scale(0.95); }
-    .btn-primary { background: var(--primary-blue); color: white; }
-    .btn-success { background: var(--cyan-blue); color: var(--text-dark); margin-top: 5px; }
-    .btn-danger { background: #ffccd5; color: #c9184a; }
-    .btn-info { background: #bde0fe; color: #0077b6; }
-    .btn-small { padding: 5px 12px; font-size: 0.8em; }
-
+    .task-row {
+        display: grid; grid-template-columns: 3fr 1fr 1fr 1.5fr 40px;
+        gap: 12px; margin-bottom: 10px; align-items: center;
+    }
+    .task-row input {
+        padding: 10px 15px; border-radius: 12px; border: 1.5px solid var(--soft-blue);
+        font-family: 'Quicksand'; font-size: 0.95em; outline: none; transition: 0.2s;
+    }
+    .task-row input:focus { border-color: var(--accent-blue); background: #faffff; }
+    
+    .btn { border: none; border-radius: 12px; padding: 10px 20px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-main { background: var(--accent-blue); color: white; }
+    .btn-outline { background: var(--soft-blue); color: var(--deep-blue); }
+    .btn-danger { background: var(--danger); color: var(--danger-text); }
+    .btn-x { background: var(--danger); color: var(--danger-text); padding: 8px; border-radius: 10px; line-height: 1; }
+    
+    .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="final-gpa">
-        <h2>Academic Results</h2>
-        <div class="gpa-display-group">
-            <div class="gpa-item">Current GPA <span class="gpa-value" id="main-gpa">0.000</span></div>
-            <div class="gpa-item">What-If GPA <span class="gpa-value" id="whatif-gpa" style="color:#00b4d8">0.000</span></div>
+    <div id="auth-section" class="card auth-container">
+        <h2 style="color:var(--deep-blue)">GPA Tracker</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <div style="margin-top:20px">
+            <button class="btn btn-main" id="loginBtn">Login</button>
+            <button class="btn btn-outline" id="signupBtn">Sign Up</button>
         </div>
-        <p id="total-info" style="margin: 10px 0 0; font-size: 0.9em; color: #8e9aaf;">Welcome back</p>
     </div>
 
-    <div class="add-course-box">
-        <div class="input-group">
-            <label>Course Name</label>
-            <input type="text" id="newCourseName" placeholder="e.g. Calculus, Physics...">
+    <div id="main-app" class="hidden">
+        <div style="text-align:right; margin-bottom:10px">
+            <span id="user-email" style="font-size:0.8em; color:var(--text-sub)"></span>
+            <button class="btn btn-danger" style="padding:5px 12px; font-size:0.75em; margin-left:10px" id="logoutBtn">Logout</button>
         </div>
-        <div class="input-group" style="flex: 0.4; min-width: 80px;">
-            <label>Credits</label>
-            <input type="number" id="newCourseCredits" min="1" max="10" value="3">
-        </div>
-        <button class="btn btn-primary" onclick="addNewCourse()">Add Course</button>
-        <button class="btn btn-danger btn-small" onclick="clearAllData()">Reset All</button>
-    </div>
 
-    <div id="coursesContainer"></div>
+        <div class="card result-card">
+            <div style="font-weight:800; color:var(--deep-blue); letter-spacing:2px; font-size: 1.5em; margin-bottom: 20px;">ACADEMIC RESULTS</div>
+            <div class="gpa-group">
+                <div class="gpa-box"><h4>Current GPA</h4><span id="main-gpa">0.000</span></div>
+                <div class="gpa-box"><h4>What-If GPA</h4><span id="whatif-gpa">0.000</span></div>
+            </div>
+            <div style="font-weight:600; color:var(--text-sub)" id="stats-summary">Courses: 0 | Credits: 0</div>
+        </div>
+
+        <div class="card add-box">
+            <div class="input-wrapper">
+                <label>COURSE NAME</label>
+                <input type="text" id="newCourseName" placeholder="e.g. Calculus">
+            </div>
+            <div class="input-wrapper" style="flex: 0.2; min-width:80px">
+                <label>CREDITS</label>
+                <input type="number" id="newCourseCredits" value="3">
+            </div>
+            <button class="btn btn-main" id="addCourseBtn">Add Course</button>
+            <button class="btn btn-danger" onclick="window.resetAll()">Reset All</button>
+        </div>
+
+        <div id="coursesContainer"></div>
+    </div>
 </div>
 
-<script>
-let courses = [];
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-function percentToLetterGrade(p){
-    if(p>=89.5)return'A'; if(p>=84.5)return'A-'; if(p>=79.5)return'B+'; if(p>=74.5)return'B';
-    if(p>=69.5)return'B-'; if(p>=64.5)return'C+'; if(p>=59.5)return'C'; if(p>=54.5)return'C-';
-    if(p>=49.5)return'D+'; if(p>=44.5)return'D'; return'F';
-}
-function letterGradeToGPA(letter){
-    const map={'A':4,'A-':3.7,'B+':3.3,'B':3,'B-':2.7,'C+':2.3,'C':2,'C-':1.7,'D+':1.3,'D':1, 'D-':0.7,'F':0};
-    return map[letter]||0;
-}
+    const firebaseConfig = {
+        apiKey: "AIzaSyDUAIYRSUtCHmS7s8KyEbK4Mht3CkfYGwk",
+        authDomain: "mygpatracker.firebaseapp.com",
+        databaseURL: "https://mygpatracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "mygpatracker",
+        storageBucket: "mygpatracker.firebasestorage.app",
+        messagingSenderId: "875336375746",
+        appId: "1:875336375746:web:5d165d168b075e55d70a5b"
+    };
 
-function saveData() { localStorage.setItem('gpa_tracker_data', JSON.stringify(courses)); }
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-function loadData() {
-    const saved = localStorage.getItem('gpa_tracker_data');
-    if (saved) {
-        courses = JSON.parse(saved);
-        courses.forEach(course => {
-            renderCourseCard(course);
-            course.categories.forEach(cat => {
-                renderCategory(course.id, cat);
-                cat.tasks.forEach(task => renderTask(course.id, cat.id, task));
-            });
-        });
-        updateOverallGPA();
-    }
-}
+    let courses = [];
+    let currentUser = null;
 
-function clearAllData() {
-    if(confirm("Are you sure you want to clear all data?")) {
-        localStorage.removeItem('gpa_tracker_data');
-        location.reload();
-    }
-}
+    const sync = () => currentUser && set(ref(db, `users/${currentUser.uid}`), courses);
 
-function toggleCollapse(courseId) {
-    const course = courses.find(c => c.id === courseId);
-    if (course) {
-        course.isCollapsed = !course.isCollapsed;
-        document.getElementById(`course-${courseId}`).classList.toggle('is-collapsed', course.isCollapsed);
-        saveData();
-    }
-}
+    document.getElementById('loginBtn').onclick = () => signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+    document.getElementById('signupBtn').onclick = () => createUserWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+    document.getElementById('logoutBtn').onclick = () => signOut(auth);
 
-function addNewCourse(){
-    const nameInput = document.getElementById('newCourseName');
-    const creditInput = document.getElementById('newCourseCredits');
-    const name = nameInput.value.trim();
-    const credits = parseFloat(creditInput.value);
-
-    if(!name || isNaN(credits)) {
-        alert("Please enter a course name and credit value.");
-        return;
-    }
-
-    const course = { id: Date.now(), name: name, credits: credits, categories: [], isCollapsed: false };
-    courses.push(course);
-    renderCourseCard(course);
-    updateOverallGPA();
-    nameInput.value = '';
-}
-
-function updateCourse(courseId, field, value) {
-    const course = courses.find(c => c.id === courseId);
-    if (course) {
-        course[field] = (field === 'credits') ? (parseFloat(value) || 0) : value;
-        updateOverallGPA();
-    }
-}
-
-function renderCourseCard(course){
-    const container = document.getElementById('coursesContainer');
-    const div = document.createElement('div');
-    div.className = `course-card ${course.isCollapsed ? 'is-collapsed' : ''}`;
-    div.id = `course-${course.id}`;
-    
-    div.innerHTML = `
-        <div class="course-header" onclick="toggleCollapse(${course.id})">
-            <div class="course-title-group">
-                <span class="toggle-icon">▼</span>
-                <input type="text" value="${course.name}" 
-                    onclick="event.stopPropagation()" 
-                    oninput="updateCourse(${course.id}, 'name', this.value)" 
-                    style="border:none; border-bottom:2px solid var(--cyan-blue); font-weight:700; color:var(--deep-blue); font-size:1.1em; background:transparent; width:auto;">
-            </div>
-            <div onclick="event.stopPropagation()" style="display:flex; align-items:center; gap:8px;">
-                <span style="font-size:0.7em; font-weight:700; color:#888;">CREDITS:</span>
-                <input type="number" value="${course.credits}" 
-                    oninput="updateCourse(${course.id}, 'credits', this.value)"
-                    style="width:35px; border:none; background:var(--soft-blue); font-weight:700; text-align:center; border-radius:8px; padding:4px;">
-                <button class="btn btn-danger btn-small" onclick="removeCourse(${course.id})">Delete</button>
-            </div>
-        </div>
-        <div class="course-body">
-            <div class="course-stats">
-                <span>Overall: <span class="course-percent">0</span>%</span> | 
-                <span>Grade: <span class="course-letter">-</span></span> | 
-                <span>GPA: <span class="course-gpa">0</span></span>
-                <span style="margin-left:auto; color:var(--deep-blue);">What-If: <span class="course-gpa-if">0</span></span>
-            </div>
-            <div class="categories-container"></div>
-            <button class="btn btn-success btn-small" onclick="addCategory(${course.id})">+ Add Component</button>
-        </div>
-    `;
-    container.prepend(div);
-}
-
-function addCategory(courseId){
-    const cname = prompt('Component name (e.g. Midterm, Final):');
-    const weight = parseFloat(prompt('Weight % (e.g. 30):'));
-    if(!cname || isNaN(weight)) return;
-
-    const course = courses.find(c => c.id === courseId);
-    const cat = { id: Date.now(), name: cname, weight: weight, tasks: [] };
-    course.categories.push(cat);
-    renderCategory(courseId, cat);
-    updateOverallGPA();
-}
-
-function renderCategory(courseId, cat){
-    const courseDiv = document.getElementById(`course-${courseId}`);
-    const container = courseDiv.querySelector('.categories-container');
-    const div = document.createElement('div');
-    div.className = 'task-category';
-    div.id = `cat-${cat.id}`;
-    div.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-            <span style="font-weight:700; color:var(--deep-blue); font-size:0.9em;">${cat.name} (${cat.weight}%) - <span class="cat-percent">0</span>%</span>
-            <div>
-                <button class="btn btn-info btn-small" onclick="addTask(${courseId},${cat.id})">+ Score</button>
-                <button class="btn btn-danger btn-small" onclick="removeCategory(${courseId},${cat.id})">Remove</button>
-            </div>
-        </div>
-        <div class="tasks-container"></div>
-    `;
-    container.appendChild(div);
-}
-
-function addTask(courseId, catId){
-    const course = courses.find(c => c.id === courseId);
-    const cat = course.categories.find(c => c.id === catId);
-    const task = { id: Date.now(), name: '', score: 0, maxScore: 100, scoreIf: null };
-    cat.tasks.push(task);
-    renderTask(courseId, catId, task);
-    updateOverallGPA();
-}
-
-function renderTask(courseId, catId, task){
-    const catDiv = document.getElementById(`cat-${catId}`);
-    const container = catDiv.querySelector('.tasks-container');
-    const div = document.createElement('div');
-    div.className = 'task-item';
-    div.id = `task-${task.id}`;
-    div.innerHTML = `
-        <input type="text" placeholder="Task name" value="${task.name}" oninput="updateTask(${courseId},${catId},${task.id},'name',this.value)">
-        <input type="number" placeholder="Score" value="${task.score}" oninput="updateTask(${courseId},${catId},${task.id},'score',this.value)">
-        <input type="number" placeholder="Max" value="${task.maxScore}" oninput="updateTask(${courseId},${catId},${task.id},'maxScore',this.value)">
-        <input type="number" placeholder="What If?" value="${task.scoreIf??''}" oninput="updateTask(${courseId},${catId},${task.id},'scoreIf',this.value)">
-        <button class="btn btn-danger btn-small" onclick="removeTask(${courseId},${catId},${task.id})">X</button>
-    `;
-    container.appendChild(div);
-}
-
-function updateTask(courseId, catId, taskId, field, value) {
-    const course = courses.find(c => c.id === courseId);
-    const cat = course.categories.find(c => c.id === catId);
-    const task = cat.tasks.find(t => t.id === taskId);
-    if (field === 'scoreIf') task[field] = value !== '' ? parseFloat(value) : null;
-    else if (field === 'name') task[field] = value;
-    else task[field] = parseFloat(value) || 0;
-    updateOverallGPA();
-}
-
-function updateOverallGPA(){
-    let totalPoints = 0, totalPointsIf = 0, totalCredits = 0;
-
-    courses.forEach(c => {
-        let courseWsum = 0, courseWsumIf = 0, totalWeight = 0;
-        c.categories.forEach(cat => {
-            let taskSum = 0, taskSumIf = 0, taskMax = 0;
-            cat.tasks.forEach(t => {
-                taskSum += t.score;
-                taskSumIf += (t.scoreIf !== null) ? t.scoreIf : t.score;
-                taskMax += t.maxScore;
-            });
-            const catScore = taskMax > 0 ? (taskSum / taskMax) * 100 : 0;
-            const catScoreIf = taskMax > 0 ? (taskSumIf / taskMax) * 100 : 0;
-            const catEl = document.getElementById(`cat-${cat.id}`);
-            if(catEl) catEl.querySelector('.cat-percent').innerText = catScore.toFixed(1);
-            
-            courseWsum += catScore * (cat.weight / 100);
-            courseWsumIf += catScoreIf * (cat.weight / 100);
-            totalWeight += cat.weight;
-        });
-
-        const finalPerc = totalWeight > 0 ? (courseWsum / (totalWeight/100)) : 0;
-        const finalPercIf = totalWeight > 0 ? (courseWsumIf / (totalWeight/100)) : 0;
-        const gpa = letterGradeToGPA(percentToLetterGrade(finalPerc));
-        const gpaIf = letterGradeToGPA(percentToLetterGrade(finalPercIf));
-
-        totalPoints += gpa * c.credits;
-        totalPointsIf += gpaIf * c.credits;
-        totalCredits += c.credits;
-
-        const card = document.getElementById(`course-${c.id}`);
-        if(card) {
-            card.querySelector('.course-percent').innerText = finalPerc.toFixed(1);
-            card.querySelector('.course-letter').innerText = percentToLetterGrade(finalPerc);
-            card.querySelector('.course-gpa').innerText = gpa.toFixed(2);
-            card.querySelector('.course-gpa-if').innerText = gpaIf.toFixed(2);
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            currentUser = user;
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('user-email').innerText = user.email;
+            onValue(ref(db, `users/${user.uid}`), snap => { courses = snap.val() || []; renderAll(); });
+        } else {
+            currentUser = null;
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('main-app').classList.add('hidden');
         }
     });
 
-    const finalGPAVal = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
-    const finalGPAIfVal = totalCredits > 0 ? (totalPointsIf / totalCredits) : 0;
+    window.addNewCourse = () => {
+        const name = document.getElementById('newCourseName').value;
+        const creds = parseFloat(document.getElementById('newCourseCredits').value);
+        if(!name) return;
+        courses.push({ id: Date.now(), name, credits: creds, categories: [], isCollapsed: false });
+        sync();
+        document.getElementById('newCourseName').value = '';
+    };
+    document.getElementById('addCourseBtn').onclick = window.addNewCourse;
 
-    document.getElementById('main-gpa').innerText = finalGPAVal.toFixed(3);
-    document.getElementById('whatif-gpa').innerText = finalGPAIfVal.toFixed(3);
-    document.getElementById('total-info').innerText = `Courses: ${courses.length} | Credits: ${totalCredits}`;
-    saveData();
-}
+    window.resetAll = () => confirm('Dọn sạch tất cả dữ liệu môn học?') && (courses = [], sync());
 
-function removeCourse(id){ courses=courses.filter(c=>c.id!==id); const el=document.getElementById(`course-${id}`); if(el)el.remove(); updateOverallGPA(); }
-function removeCategory(cId, catId){ 
-    const c = courses.find(x=>x.id===cId); 
-    c.categories = c.categories.filter(x=>x.id!==catId); 
-    const el=document.getElementById(`cat-${catId}`); if(el)el.remove(); 
-    updateOverallGPA(); 
-}
-function removeTask(cId, catId, tId){
-    const c = courses.find(x=>x.id===cId);
-    const cat = c.categories.find(x=>x.id===catId);
-    cat.tasks = cat.tasks.filter(x=>x.id!==tId);
-    const el=document.getElementById(`task-${tId}`); if(el)el.remove();
-    updateOverallGPA();
-}
+    window.addCat = (cId) => {
+        const name = prompt('Tên thành phần (ví dụ: Midterm):');
+        const w = parseFloat(prompt('Trọng số % (ví dụ: 30):'));
+        if(name && w) {
+            const c = courses.find(x => x.id === cId);
+            if(!c.categories) c.categories = [];
+            c.categories.push({ id: Date.now(), name, weight: w, tasks: [] });
+            sync();
+        }
+    };
 
-window.onload = loadData;
+    window.addTask = (cId, catId) => {
+        const cat = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId);
+        if(!cat.tasks) cat.tasks = [];
+        cat.tasks.push({ id: Date.now(), label: '', score: 0, maxScore: 100, scoreIf: null });
+        sync();
+    };
+
+    window.updateT = (cId, catId, tId, f, v) => {
+        const t = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.find(x => x.id === tId);
+        if (f === 'scoreIf') t[f] = v !== '' ? parseFloat(v) : null;
+        else if (f === 'label') t[f] = v;
+        else t[f] = v !== '' ? parseFloat(v) : 0;
+        sync();
+    };
+
+    window.delCourse = (id) => confirm('Xóa môn học này?') && (courses = courses.filter(c => c.id !== id), sync());
+    window.delCat = (cId, catId) => confirm('Xóa mục này?') && (courses.find(c => c.id === cId).categories = courses.find(c => c.id === cId).categories.filter(ca => ca.id !== catId), sync());
+    window.delTask = (cId, catId, tId) => (courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.filter(t => t.id !== tId), sync());
+    window.tog = (id) => { const c = courses.find(x => x.id === id); c.isCollapsed = !c.isCollapsed; renderAll(); };
+
+    const thres = { 'A': 89.5, 'A-': 84.5, 'B+': 79.5, 'B': 74.5, 'B-': 69.5, 'C+': 64.5, 'C': 59.5, 'C-': 54.5, 'D+': 49.5, 'D': 44.5, 'F': 0 };
+    const getL = (p) => { for(let k in thres) if(p >= thres[k]) return k; return 'F'; };
+    const getG = (l) => ({'A':4,'A-':3.7,'B+':3.3,'B':3,'B-':2.7,'C+':2.3,'C':2,'C-':1.7,'D+':1.3,'D':1,'F':0}[l] || 0);
+
+    function renderAll() {
+        const container = document.getElementById('coursesContainer');
+        container.innerHTML = '';
+        let tg=0, tgi=0, tc=0;
+
+        courses.forEach(c => {
+            let curWS=0, ifWS=0, totW=0;
+            (c.categories || []).forEach(cat => {
+                let s=0, si=0, m=0;
+                (cat.tasks || []).forEach(t => { 
+                    s += (t.score || 0); 
+                    m += (t.maxScore || 0); 
+                    si += (t.scoreIf !== null) ? t.scoreIf : (t.score || 0); 
+                });
+                const catAvg = m > 0 ? (s/m)*100 : 0;
+                curWS += catAvg * (cat.weight/100);
+                ifWS += (m > 0 ? (si/m)*100 : 0) * (cat.weight/100);
+                totW += cat.weight;
+                cat.currentPercent = catAvg;
+            });
+            const p = totW>0?(curWS/(totW/100)):0;
+            const pi = totW>0?(ifWS/(totW/100)):0;
+            const l = getL(p), g = getG(l);
+            const li = getL(pi), gi = getG(li);
+            tg+=g*c.credits; tgi+=gi*c.credits; tc+=c.credits;
+
+            const card = document.createElement('div');
+            card.className = `course-item ${c.isCollapsed?'is-collapsed':''}`;
+            card.innerHTML = `
+                <div class="course-top" onclick="window.tog(${c.id})">
+                    <div class="course-title">${c.name}</div>
+                    <div style="display:flex; gap:10px; align-items:center">
+                        <span style="font-size:0.8em; color:var(--text-sub); font-weight:700">CREDITS: <span style="background:var(--soft-blue); padding:2px 8px; border-radius:5px; color:var(--deep-blue)">${c.credits}</span></span>
+                        <button class="btn btn-danger" style="padding:4px 12px; font-size:0.7em" onclick="event.stopPropagation(); window.delCourse(${c.id})">Delete</button>
+                    </div>
+                </div>
+                <div class="${c.isCollapsed?'hidden':''}">
+                    <div class="course-summary-bar">
+                        <div><div style="color:var(--text-sub); font-size:0.75em">ACTUAL</div>${p.toFixed(1)}% | Grade: ${l} | GPA: ${g.toFixed(2)}</div>
+                        <div style="text-align:right"><div style="color:var(--deep-blue); font-size:0.75em">WHAT-IF</div>${pi.toFixed(1)}% | Grade: ${li} | GPA: ${gi.toFixed(2)}</div>
+                    </div>
+                    <div id="cats-${c.id}"></div>
+                    <div style="padding: 0 30px 25px;"><button class="btn btn-outline" style="width:100%" onclick="window.addCat(${c.id})">+ Add Component</button></div>
+                </div>
+            `;
+            container.prepend(card);
+
+            (c.categories || []).forEach(cat => {
+                const d = document.createElement('div');
+                d.className = 'category-section';
+                d.innerHTML = `
+                    <div class="category-header">
+                        <span class="category-name">${cat.name} (${cat.weight}%) - ${cat.currentPercent.toFixed(1)}%</span>
+                        <div>
+                            <button class="btn btn-main" style="padding:5px 15px; font-size:0.8em" onclick="window.addTask(${c.id},${cat.id})">+ Score</button>
+                            <button class="btn btn-danger" style="padding:5px 15px; font-size:0.8em; margin-left:5px" onclick="window.delCat(${c.id},${cat.id})">Remove</button>
+                        </div>
+                    </div>
+                    <div id="tasks-${cat.id}"></div>
+                `;
+                document.getElementById(`cats-${c.id}`).appendChild(d);
+
+                (cat.tasks || []).forEach(t => {
+                    const ti = document.createElement('div');
+                    ti.className = 'task-row';
+                    ti.innerHTML = `
+                        <input type="text" value="${t.label || ''}" placeholder="Task Name" onchange="window.updateT(${c.id},${cat.id},${t.id},'label',this.value)">
+                        <input type="number" value="${t.score || ''}" placeholder="Score" onchange="window.updateT(${c.id},${cat.id},${t.id},'score',this.value)">
+                        <input type="number" value="${t.maxScore || ''}" placeholder="Max" onchange="window.updateT(${c.id},${cat.id},${t.id},'maxScore',this.value)">
+                        <input type="number" value="${t.scoreIf??''}" placeholder="What If?" onchange="window.updateT(${c.id},${cat.id},${t.id},'scoreIf',this.value)">
+                        <button class="btn btn-x" onclick="window.delTask(${c.id},${cat.id},${t.id})">✕</button>
+                    `;
+                    document.getElementById(`tasks-${cat.id}`).appendChild(ti);
+                });
+            });
+        });
+        document.getElementById('main-gpa').innerText = tc>0?(tg/tc).toFixed(3):"0.000";
+        document.getElementById('whatif-gpa').innerText = tc>0?(tgi/tc).toFixed(3):"0.000";
+        document.getElementById('stats-summary').innerText = `Courses: ${courses.length} | Credits: ${tc}`;
+    }
 </script>
 </body>
 </html>
