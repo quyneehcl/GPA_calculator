@@ -3,319 +3,306 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPA Tracker Cloud - Ultimate Version</title>
+<title>GPA Tracker - Smart Analytics</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     :root {
-        --bg-blue: #f4f9ff;
-        --accent-blue: #a2d2ff;
-        --deep-blue: #4a90e2;
-        --soft-blue: #e1f0ff;
-        --white: #ffffff;
-        --text-main: #2d4156;
-        --text-sub: #7a8ba0;
-        --danger: #ffccd5;
-        --danger-text: #c9184a;
-        --shadow: 0 10px 30px rgba(162, 210, 255, 0.2);
+        --bg-blue: #f8fbff; --accent-blue: #c5e1ff; --deep-blue: #6396e3;
+        --soft-blue: #ebf4ff; --white: #ffffff; --text-main: #5a718a;
+        --text-sub: #8ea4bb; --border-color: #d8e9ff; --danger: #ff4d6d;
     }
-
-    body {
-        font-family: 'Quicksand', sans-serif;
-        background-color: var(--bg-blue);
-        background-image: radial-gradient(#d6eaff 1px, transparent 1px);
-        background-size: 20px 20px;
-        color: var(--text-main);
-        padding: 40px 20px; margin: 0;
-    }
-
+    body { font-family: 'Quicksand', sans-serif; background-color: var(--bg-blue); color: var(--text-main); padding: 20px; margin: 0; }
     .container { max-width: 1000px; margin: auto; }
-
-    .card {
-        background: var(--white); border-radius: 30px; padding: 30px;
-        box-shadow: var(--shadow); margin-bottom: 30px; border: 2px solid var(--soft-blue);
-    }
-
-    /* Auth Styling */
-    .auth-container { text-align: center; }
-    .auth-container input {
-        padding: 12px 20px; border-radius: 15px; border: 2px solid var(--soft-blue);
-        margin: 5px; outline: none; width: 220px; font-family: 'Quicksand';
-    }
-
-    /* Header Academic Results - SIÊU TO */
-    .result-card { border: 2px solid var(--accent-blue); text-align: center; }
-    .result-header-big {
-        font-size: 1.5em; 
-        font-weight: 800;
-        color: var(--deep-blue);
-        letter-spacing: 2px;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-    }
-    .gpa-group { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0; }
-    .gpa-box {
-        background: var(--soft-blue); padding: 20px; border-radius: 20px;
-        min-width: 180px; border: 2px dashed var(--accent-blue);
-    }
-    .gpa-box h4 { margin: 0 0 5px 0; color: var(--text-sub); font-size: 0.9em; text-transform: uppercase; }
-    .gpa-box span { font-size: 2.5em; font-weight: 800; color: var(--deep-blue); }
-
-    /* Input Area */
-    .add-box { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
-    .input-wrapper { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
-    .input-wrapper label { font-weight: 700; font-size: 0.75em; color: var(--deep-blue); margin: 0 0 8px 5px; }
-    .add-box input {
-        padding: 12px 18px; border-radius: 15px; border: 2px solid var(--soft-blue);
-        outline: none; font-family: 'Quicksand';
-    }
-
-    /* Course Styling */
-    .course-item { background: var(--white); border-radius: 25px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
-    .course-top { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: #fff; transition: 0.2s; }
-    .course-top:hover { background: #fafcff; }
-    .course-title { font-weight: 700; color: var(--deep-blue); font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
-    .course-title::before { content: '▼'; font-size: 0.7em; transition: 0.3s; }
-    .is-collapsed .course-title::before { transform: rotate(-90deg); }
-
-    .course-summary-bar {
-        background: var(--bg-blue); margin: 0 30px 20px; padding: 15px 25px; border-radius: 15px;
-        display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 1em; font-weight: 700;
-    }
-
-    /* Category & Tasks */
-    .category-section { background: #fdfdfe; border: 1.5px solid #f0f4f8; border-radius: 20px; padding: 20px; margin: 0 30px 20px; }
-    .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .category-name { font-weight: 700; color: var(--deep-blue); font-size: 1.1em; }
-
-    .task-row { display: grid; grid-template-columns: 3fr 1fr 1fr 1.5fr 45px; gap: 12px; margin-bottom: 10px; align-items: center; }
-    .task-row input { padding: 10px 15px; border-radius: 12px; border: 1.5px solid var(--soft-blue); font-family: 'Quicksand'; outline: none; }
-    .task-row input:focus { border-color: var(--accent-blue); background: #faffff; }
     
-    /* Buttons */
-    .btn { border: none; border-radius: 12px; padding: 10px 20px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-main { background: var(--accent-blue); color: white; }
-    .btn-outline { background: var(--soft-blue); color: var(--deep-blue); }
-    .btn-danger { background: var(--danger); color: var(--danger-text); }
-    .btn-x { background: var(--danger); color: var(--danger-text); padding: 8px; border-radius: 10px; line-height: 1; display: flex; justify-content: center; }
+    #auth-container { display: flex; justify-content: center; align-items: center; height: 90vh; }
+    .login-card { background: var(--white); padding: 40px; border-radius: 40px; box-shadow: 0 10px 30px rgba(99, 150, 227, 0.1); width: 100%; max-width: 350px; text-align: center; border: 2px solid var(--accent-blue); }
+    .login-card input { width: 100%; padding: 12px 15px; margin: 10px 0; border-radius: 15px; border: 1.5px solid var(--border-color); font-family: 'Quicksand'; box-sizing: border-box; outline: none; }
+
+    .header-nav { display: flex; justify-content: flex-end; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .account-email { font-weight: 700; font-size: 0.9em; color: var(--deep-blue); }
+    .btn-logout { background: #ffe4e9; color: #e91e63; border: none; padding: 5px 15px; border-radius: 12px; cursor: pointer; font-family: 'Quicksand'; font-weight: 700; font-size: 0.8em; }
+
+    .academic-frame { border: 2px solid var(--accent-blue); border-radius: 40px; padding: 25px; position: relative; margin-bottom: 40px; background: white; text-align: center; }
+    .academic-title { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: white; padding: 0 20px; font-weight: 800; color: var(--deep-blue); letter-spacing: 1px; font-size: 1.2em; }
     
+    /* Dropdown Style */
+    .view-selector { margin-bottom: 20px; border: 1.5px solid var(--accent-blue); padding: 8px 15px; border-radius: 15px; font-family: 'Quicksand'; font-weight: 700; color: var(--deep-blue); outline: none; background: var(--bg-blue); cursor: pointer; }
+
+    .result-section { display: flex; justify-content: center; gap: 20px; margin-bottom: 5px; }
+    .result-box { background: var(--soft-blue); border: 2px dashed var(--accent-blue); border-radius: 25px; padding: 12px 25px; text-align: center; min-width: 160px; }
+    .result-box h4 { margin: 0; font-size: 0.75em; text-transform: uppercase; color: var(--text-sub); }
+    .result-box .gpa-val { font-size: 2.2em; font-weight: 700; color: var(--deep-blue); line-height: 1.1; }
+    
+    .semester-block { background: white; border-radius: 30px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .course-item { border: 1px solid #edf3f9; border-radius: 20px; margin-bottom: 15px; overflow: hidden; background: #fff; }
+    .course-top { padding: 15px 25px; cursor: pointer; }
+    .course-summary-bar { display: flex; justify-content: space-between; background: var(--soft-blue); padding: 12px 25px; border-radius: 15px; margin-top: 10px; font-size: 0.9em; font-weight: 700; }
+
+    .task-row { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 45px; gap: 10px; padding: 6px 0; align-items: center; }
+    .task-row input { border: 1.5px solid var(--border-color); border-radius: 18px; padding: 10px; font-family: 'Quicksand'; font-weight: 600; font-size: 0.85em; outline: none; }
+
+    .btn { border: none; border-radius: 15px; padding: 10px 20px; font-weight: 700; cursor: pointer; font-family: 'Quicksand'; transition: 0.3s; }
+    .btn-main { background: var(--deep-blue); color: white; }
+    .btn-danger { background: #ffe4e9; color: var(--danger); font-size: 0.8em; }
+    .del-btn { color: #ccc; cursor: pointer; font-weight: 800; }
+    .del-btn:hover { color: var(--danger); }
     .hidden { display: none !important; }
+    .arrow { display: inline-block; transition: transform 0.3s; margin-right: 8px; color: var(--deep-blue); }
+    .collapsed-icon { transform: rotate(-90deg); }
+    
+    .editable-text:hover { text-decoration: underline; color: #333; }
+
+    .scale-editor { background: #fff; border: 1.5px dashed var(--accent-blue); border-radius: 20px; padding: 20px; margin: 15px 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 15px; }
+    .scale-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: 700; }
+    .scale-item input { width: 100%; border-radius: 10px; border: 1px solid var(--border-color); padding: 8px; text-align: center; font-family: 'Quicksand'; margin-top: 5px; }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="auth-section" class="card auth-container">
-        <h2 style="color:var(--deep-blue)">GPA Tracker Cloud</h2>
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
-        <div style="margin-top:20px">
-            <button class="btn btn-main" id="loginBtn">Login</button>
-            <button class="btn btn-outline" id="signupBtn">Sign Up</button>
+    <div id="auth-container">
+        <div class="login-card">
+            <h2 id="auth-title">Login</h2>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button class="btn btn-main" style="width: 100%; margin-top: 15px;" id="auth-btn">Sign In</button>
+            <p style="font-size: 0.85em; margin-top: 20px;">
+                <span id="toggle-text">Don't have an account?</span> 
+                <span id="toggle-auth" style="color: var(--deep-blue); cursor: pointer; font-weight: 700;">Sign Up</span>
+            </p>
         </div>
     </div>
 
     <div id="main-app" class="hidden">
-        <div style="text-align:right; margin-bottom:10px">
-            <span id="user-email" style="font-size:0.85em; color:var(--text-sub); font-weight: 600;"></span>
-            <button class="btn btn-danger" style="padding:5px 12px; font-size:0.75em; margin-left:10px" id="logoutBtn">Logout</button>
+        <div class="header-nav">
+            <span class="account-email" id="user-email-header">loading...</span>
+            <button class="btn-logout" id="logoutBtn">Logout</button>
         </div>
 
-        <div class="card result-card">
-            <div class="result-header-big">Academic Results</div>
-            <div class="gpa-group">
-                <div class="gpa-box"><h4>Current GPA</h4><span id="main-gpa">0.000</span></div>
-                <div class="gpa-box"><h4>What-If GPA</h4><span id="whatif-gpa">0.000</span></div>
+        <div class="academic-frame">
+            <div class="academic-title">ACADEMIC RESULTS</div>
+            
+            <select id="view-mode-selector" class="view-selector" onchange="renderAll()">
+                <option value="all">All Semesters (Cumulative)</option>
+            </select>
+
+            <div class="result-section">
+                <div class="result-box"><h4>GPA</h4><div class="gpa-val" id="cum-gpa">0.00</div></div>
+                <div class="result-box"><h4>What-If GPA</h4><div class="gpa-val" id="cum-if-gpa">0.00</div></div>
             </div>
-            <div style="font-weight:700; color:var(--text-sub); font-size: 1.1em;" id="stats-summary">Courses: 0 | Credits: 0</div>
+            <div style="font-weight: 700; color: #a0b1c5; margin-top: 10px;">
+                Courses: <span id="total-courses">0</span> | Credits: <span id="total-credits">0</span>
+            </div>
         </div>
 
-        <div class="card add-box">
-            <div class="input-wrapper">
-                <label>COURSE NAME</label>
-                <input type="text" id="newCourseName" placeholder="e.g. Data Structures">
-            </div>
-            <div class="input-wrapper" style="flex: 0.2; min-width:80px">
-                <label>CREDITS</label>
-                <input type="number" id="newCourseCredits" value="3">
-            </div>
-            <button class="btn btn-main" id="addCourseBtn">Add Course</button>
-            <button class="btn btn-danger" onclick="window.resetAll()">Reset All</button>
+        <div style="text-align: center; margin-bottom: 25px; display: flex; justify-content: center; gap: 10px;">
+            <button class="btn btn-main" onclick="window.addSemester()">+ New Semester</button>
+            <button class="btn btn-danger" onclick="window.clearAllData()">X Clear All Data</button>
         </div>
-
-        <div id="coursesContainer"></div>
+        <div id="semesterContainer"></div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyDUAIYRSUtCHmS7s8KyEbK4Mht3CkfYGwk",
-        authDomain: "mygpatracker.firebaseapp.com",
-        databaseURL: "https://mygpatracker-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "mygpatracker",
-        storageBucket: "mygpatracker.firebasestorage.app",
-        messagingSenderId: "875336375746",
-        appId: "1:875336375746:web:5d165d168b075e55d70a5b"
+        apiKey: "AIzaSyCZMMoJYdd0gRB-6K3kUyRy_l8683OWU3Y",
+        authDomain: "gpa-cal-update.firebaseapp.com",
+        projectId: "gpa-cal-update",
+        storageBucket: "gpa-cal-update.firebasestorage.app",
+        messagingSenderId: "135395881236",
+        appId: "1:135395881236:web:46f4a3dc027a2d2ddf9201"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-
-    let courses = [];
+    let semesters = [];
     let currentUser = null;
+    let isLoginMode = true;
 
-    const sync = () => currentUser && set(ref(db, `users/${currentUser.uid}`), courses);
-
-    document.getElementById('loginBtn').onclick = () => signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
-    document.getElementById('signupBtn').onclick = () => createUserWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
-    document.getElementById('logoutBtn').onclick = () => signOut(auth);
+    const DEFAULT_SCALE = {'A':89.5, 'A-':84.5, 'B+':79.5, 'B':74.5, 'B-':69.5, 'C+':64.5, 'C':59.5, 'C-':54.5, 'D+':49.5, 'D':44.5};
+    const gradePoints = {'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'C-':1.7,'D+':1.3,'D':1.0,'F':0};
 
     onAuthStateChanged(auth, user => {
         if (user) {
             currentUser = user;
-            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('auth-container').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
-            document.getElementById('user-email').innerText = user.email;
-            onValue(ref(db, `users/${user.uid}`), snap => { courses = snap.val() || []; renderAll(); });
+            document.getElementById('user-email-header').innerText = user.email;
+            onValue(ref(db, `users/${user.uid}/data`), snap => { semesters = snap.val() || []; renderAll(); });
         } else {
-            currentUser = null;
-            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('auth-container').classList.remove('hidden');
             document.getElementById('main-app').classList.add('hidden');
         }
     });
 
-    window.addNewCourse = () => {
-        const name = document.getElementById('newCourseName').value;
-        const creds = parseFloat(document.getElementById('newCourseCredits').value);
-        if(!name) return;
-        courses.push({ id: Date.now(), name, credits: creds, categories: [], isCollapsed: false });
+    document.getElementById('toggle-auth').onclick = () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('auth-title').innerText = isLoginMode ? 'Login' : 'Sign Up';
+        document.getElementById('auth-btn').innerText = isLoginMode ? 'Sign In' : 'Create Account';
+        document.getElementById('toggle-auth').innerText = isLoginMode ? "Sign Up" : "Login";
+    };
+
+    document.getElementById('auth-btn').onclick = async () => {
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-password').value;
+        try {
+            if (isLoginMode) await signInWithEmailAndPassword(auth, email, pass);
+            else await createUserWithEmailAndPassword(auth, email, pass);
+        } catch (e) { alert(e.message); }
+    };
+
+    document.getElementById('logoutBtn').onclick = () => signOut(auth);
+    const sync = () => currentUser && set(ref(db, `users/${currentUser.uid}/data`), semesters);
+    
+    window.clearAllData = () => { if(confirm("Delete ALL data?")) { semesters = []; sync(); } };
+    window.delSem = (sId) => { if(confirm("Delete semester?")) { semesters = semesters.filter(s => s.id !== sId); sync(); } };
+    window.delCourse = (sId, cId) => { if(confirm("Delete course?")) { const s = semesters.find(x => x.id === sId); s.courses = s.courses.filter(c => c.id !== cId); sync(); } };
+    window.delCat = (sId, cId, catId) => { if(confirm("Delete component?")) { const c = semesters.find(x => x.id === sId).courses.find(y => y.id === cId); c.categories = c.categories.filter(z => z.id !== catId); sync(); } };
+    window.delTask = (sId, cId, catId, tId) => { const ca = semesters.find(x => x.id === sId).courses.find(y => y.id === cId).categories.find(z => z.id === catId); ca.tasks = ca.tasks.filter(t => t.id !== tId); sync(); };
+
+    window.addSemester = () => { const n = prompt("Semester Name: (e.g. Year 1 Spring)"); if(n) { semesters.push({ id: Date.now(), name: n, courses: [], isCollapsed: false }); sync(); } };
+    window.addCourse = (sId) => {
+        const n = prompt("Course Name: (e.g. Calculus I)"), c = parseFloat(prompt("Credits: (e.g. 3)"));
+        if(n) { const sem = semesters.find(x => x.id === sId); (sem.courses = sem.courses || []).push({ id: Date.now(), name: n, credits: c || 0, categories: [], isCollapsed: false, showScale: false, thres: {...DEFAULT_SCALE} }); sync(); }
+    };
+
+    window.renameSem = (sId) => {
+        const s = semesters.find(x => x.id === sId);
+        const n = prompt("Edit Semester Name: (e.g. Year 1 Spring)", s.name);
+        if(n) { s.name = n; sync(); }
+    };
+    
+    window.editCourse = (sId, cId) => {
+        const c = semesters.find(x => x.id === sId).courses.find(y => y.id === cId);
+        const n = prompt("Edit Course Name: (e.g. Calculus I)", c.name);
+        const cr = prompt("Edit Credits: (e.g. 3)", c.credits);
+        if(n) c.name = n;
+        if(cr) c.credits = parseFloat(cr) || 0;
         sync();
-        document.getElementById('newCourseName').value = '';
-    };
-    document.getElementById('addCourseBtn').onclick = window.addNewCourse;
-
-    window.resetAll = () => confirm('Clean up all course data?') && (courses = [], sync());
-
-    window.addCat = (cId) => {
-        const name = prompt('Component Name (e.g. Midterm):');
-        const w = parseFloat(prompt('Weight % (e.g. 30):'));
-        if(name && !isNaN(w)) {
-            const c = courses.find(x => x.id === cId);
-            if(!c.categories) c.categories = [];
-            c.categories.push({ id: Date.now(), name, weight: w, tasks: [] });
-            sync();
-        }
     };
 
-    window.addTask = (cId, catId) => {
-        const cat = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId);
-        if(!cat.tasks) cat.tasks = [];
-        cat.tasks.push({ id: Date.now(), label: '', score: 0, maxScore: 100, scoreIf: null });
-        sync();
+    window.addCat = (sId, cId) => {
+        const n = prompt("Component:"), w = parseFloat(prompt("Weight %:"));
+        if(n && w) { const course = semesters.find(s => s.id === sId).courses.find(c => c.id === cId); (course.categories = course.categories || []).push({ id: Date.now(), name: n, weight: w, tasks: [], isCollapsed: false }); sync(); }
+    };
+    window.addTask = (sId, cId, catId) => {
+        const cat = semesters.find(s => s.id === sId).courses.find(c => c.id === cId).categories.find(ca => ca.id === catId);
+        (cat.tasks = cat.tasks || []).push({ id: Date.now(), label: '', score: 0, maxScore: 100, scoreIf: null }); sync();
     };
 
-    window.updateT = (cId, catId, tId, f, v) => {
-        const t = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.find(x => x.id === tId);
-        if (f === 'label') t[f] = v;
-        else if (f === 'scoreIf') t[f] = v === '' ? null : parseFloat(v);
-        else t[f] = v === '' ? 0 : parseFloat(v);
-        sync();
+    window.updateT = (sId, cId, catId, tId, f, v) => {
+        const t = semesters.find(s => s.id === sId).courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.find(x => x.id === tId);
+        if(f === 'label') t[f] = v; else t[f] = (v === '' || v === null) ? (f==='scoreIf' ? null : 0) : parseFloat(v); sync();
     };
 
-    window.delCourse = (id) => confirm('Delete course?') && (courses = courses.filter(c => c.id !== id), sync());
-    window.delCat = (cId, catId) => confirm('Delete category?') && (courses.find(c => c.id === cId).categories = courses.find(c => c.id === cId).categories.filter(ca => ca.id !== catId), sync());
-    window.delTask = (cId, catId, tId) => (courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.filter(t => t.id !== tId), sync());
-    window.tog = (id) => { const c = courses.find(x => x.id === id); c.isCollapsed = !c.isCollapsed; renderAll(); };
+    window.updateScale = (sId, cId, grade, val) => { semesters.find(s => s.id === sId).courses.find(c => c.id === cId).thres[grade] = parseFloat(val) || 0; sync(); };
+    window.tog = (type, sId, cId, catId) => {
+        let obj;
+        if(type==='sem') obj = semesters.find(x => x.id === sId);
+        else if(type==='course') obj = semesters.find(s => s.id === sId).courses.find(c => c.id === cId);
+        else if(type==='cat') obj = semesters.find(s => s.id === sId).courses.find(c => c.id === cId).categories.find(ca => ca.id === catId);
+        else if(type==='scale') obj = semesters.find(s => s.id === sId).courses.find(c => c.id === cId);
+        if(type==='scale') obj.showScale = !obj.showScale; else obj.isCollapsed = !obj.isCollapsed;
+        renderAll();
+    };
 
-    const thres = { 'A': 89.5, 'A-': 84.5, 'B+': 79.5, 'B': 74.5, 'B-': 69.5, 'C+': 64.5, 'C': 59.5, 'C-': 54.5, 'D+': 49.5, 'D': 44.5, 'F': 0 };
-    const getL = (p) => { for(let k in thres) if(p >= thres[k]) return k; return 'F'; };
-    const getG = (l) => ({'A':4,'A-':3.7,'B+':3.3,'B':3,'B-':2.7,'C+':2.3,'C':2,'C-':1.7,'D+':1.3,'D':1,'F':0}[l] || 0);
+    const getL = (p, th) => {
+        const sorted = Object.keys(th || DEFAULT_SCALE).sort((a,b) => (th || DEFAULT_SCALE)[b]-(th || DEFAULT_SCALE)[a]);
+        for(let k of sorted) if(p >= (th || DEFAULT_SCALE)[k]) return k; return 'F';
+    };
 
-    function renderAll() {
-        const container = document.getElementById('coursesContainer');
+    window.renderAll = function() {
+        const container = document.getElementById('semesterContainer');
+        const selector = document.getElementById('view-mode-selector');
+        const currentView = selector.value;
+        
+        // Update selector options
+        const savedVal = selector.value;
+        selector.innerHTML = '<option value="all">All Semesters (Cumulative)</option>';
+        semesters.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.id; opt.innerText = s.name;
+            selector.appendChild(opt);
+        });
+        selector.value = savedVal;
+
         container.innerHTML = '';
-        let tg=0, tgi=0, tc=0;
+        let totalGPA_Sum=0, totalIfGPA_Sum=0, totalCr=0, tCourses=0;
 
-        courses.forEach(c => {
-            let curWS=0, ifWS=0, totW=0;
-            (c.categories || []).forEach(cat => {
-                let s=0, si=0, m=0;
-                (cat.tasks || []).forEach(t => { 
-                    const sc = parseFloat(t.score) || 0;
-                    const mx = parseFloat(t.maxScore) || 0;
-                    s += sc; m += mx;
-                    si += (t.scoreIf !== null && t.scoreIf !== undefined) ? parseFloat(t.scoreIf) : sc;
+        semesters.forEach(sem => {
+            const semDiv = document.createElement('div'); semDiv.className = 'semester-block';
+            semDiv.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="margin:0; color:var(--deep-blue); cursor:pointer">
+                    <span onclick="window.tog('sem', ${sem.id})"><span class="arrow ${sem.isCollapsed?'collapsed-icon':''}">▼</span></span>
+                    <span class="editable-text" onclick="window.renameSem(${sem.id})">${sem.name}</span>
+                </h2>
+                <div style="display:flex; gap:12px; align-items:center"><button class="btn btn-main" style="padding:5px 12px; font-size:0.8em" onclick="window.addCourse(${sem.id})">+ Course</button><span class="del-btn" onclick="window.delSem(${sem.id})">X</span></div></div>
+                <div id="c-list-${sem.id}" class="${sem.isCollapsed?'hidden':''}" style="margin-top:20px"></div>`;
+            container.appendChild(semDiv);
+
+            (sem.courses || []).forEach(course => {
+                let actScore_Pct=0, ifScore_Pct=0, weightSum=0;
+                (course.categories || []).forEach(cat => {
+                    let s_act=0, s_if=0, m_total=0;
+                    (cat.tasks || []).forEach(t => { 
+                        s_act += (t.score || 0); m_total += (t.maxScore || 100); 
+                        s_if += (t.scoreIf !== null && t.scoreIf !== undefined) ? t.scoreIf : (t.score || 0); 
+                    });
+                    const catPct = (m_total > 0 ? (s_act/m_total)*100 : 0);
+                    cat.lastScore = catPct * (cat.weight/100); actScore_Pct += cat.lastScore;
+                    ifScore_Pct += (m_total > 0 ? (s_if/m_total)*100 : 0) * (cat.weight/100); weightSum += cat.weight;
                 });
-                const catAvg = m > 0 ? (s/m)*100 : 0;
-                const catIfAvg = m > 0 ? (si/m)*100 : 0;
-                curWS += catAvg * (cat.weight/100);
-                ifWS += catIfAvg * (cat.weight/100);
-                totW += cat.weight;
-                cat.currentPercent = catAvg;
-            });
-            const p = totW>0?(curWS/(totW/100)):0;
-            const pi = totW>0?(ifWS/(totW/100)):0;
-            const l = getL(p), g = getG(l);
-            const li = getL(pi), gi = getG(li);
-            tg+=g*c.credits; tgi+=gi*c.credits; tc+=c.credits;
+                const finalAct = weightSum > 0 ? actScore_Pct / (weightSum/100) : 0;
+                const finalIf = weightSum > 0 ? ifScore_Pct / (weightSum/100) : 0;
+                const letterAct = getL(finalAct, course.thres); const pointAct = gradePoints[letterAct] || 0;
+                const letterIf = getL(finalIf, course.thres); const pointIf = gradePoints[letterIf] || 0;
+                
+                // Analytics logic based on Selector
+                if (currentView === "all" || currentView == sem.id) {
+                    tCourses++;
+                    totalGPA_Sum += pointAct * course.credits;
+                    totalIfGPA_Sum += pointIf * course.credits;
+                    totalCr += course.credits;
+                }
 
-            const card = document.createElement('div');
-            card.className = `course-item ${c.isCollapsed?'is-collapsed':''}`;
-            card.innerHTML = `
-                <div class="course-top" onclick="window.tog(${c.id})">
-                    <div class="course-title">${c.name}</div>
-                    <div style="display:flex; gap:10px; align-items:center">
-                        <span style="font-size:0.85em; color:var(--text-sub); font-weight:700">CREDITS: <span style="background:var(--soft-blue); padding:3px 10px; border-radius:8px; color:var(--deep-blue)">${c.credits}</span></span>
-                        <button class="btn btn-danger" style="padding:4px 12px; font-size:0.7em" onclick="event.stopPropagation(); window.delCourse(${c.id})">Delete</button>
+                const cDiv = document.createElement('div'); cDiv.className = 'course-item';
+                cDiv.innerHTML = `<div class="course-top">
+                    <div style="display:flex; justify-content:space-between; align-items:center">
+                        <strong style="cursor:pointer">
+                            <span onclick="window.tog('course', ${sem.id}, ${course.id})"><span class="arrow ${course.isCollapsed?'collapsed-icon':''}">▼</span></span>
+                            <span class="editable-text" onclick="window.editCourse(${sem.id}, ${course.id})">${course.name} (${course.credits} cr)</span>
+                        </strong>
+                        <div style="display:flex; gap:12px; align-items:center"><button class="btn" style="background:#f0f7ff; color:var(--deep-blue); font-size:0.7em; padding:4px 8px" onclick="window.tog('scale', ${sem.id}, ${course.id})">⚙️ Scale</button><span class="del-btn" onclick="window.delCourse(${sem.id}, ${course.id})">X</span></div>
+                    </div>
+                    <div class="course-summary-bar" onclick="window.tog('course', ${sem.id}, ${course.id})">
+                        <div><span style="font-size:0.7em; color:var(--text-sub)">ACTUAL</span><br>${finalAct.toFixed(1)}% | ${letterAct} | ${pointAct.toFixed(2)}</div>
+                        <div style="text-align:right"><span style="font-size:0.7em; color:var(--text-sub)">WHAT-IF</span><br>${finalIf.toFixed(1)}% | ${letterIf} | ${pointIf.toFixed(2)}</div>
                     </div>
                 </div>
-                <div class="${c.isCollapsed?'hidden':''}">
-                    <div class="course-summary-bar">
-                        <div><div style="color:var(--text-sub); font-size:0.75em; font-weight:700">ACTUAL</div>${p.toFixed(1)}% | Grade: ${l} | GPA: ${g.toFixed(2)}</div>
-                        <div style="text-align:right"><div style="color:var(--deep-blue); font-size:0.75em; font-weight:700">WHAT-IF</div>${pi.toFixed(1)}% | Grade: ${li} | GPA: ${gi.toFixed(2)}</div>
-                    </div>
-                    <div id="cats-${c.id}"></div>
-                    <div style="padding: 0 30px 25px;"><button class="btn btn-outline" style="width:100%; border-radius:15px;" onclick="window.addCat(${c.id})">+ Add Component</button></div>
-                </div>
-            `;
-            container.prepend(card);
+                <div class="${course.isCollapsed?'hidden':''}" style="padding:0 20px 20px;"><div class="scale-editor ${course.showScale ? '' : 'hidden'}">${Object.keys(course.thres || DEFAULT_SCALE).map(k => `<div class="scale-item"><span>${k}</span><input type="number" step="0.1" value="${(course.thres || DEFAULT_SCALE)[k]}" onchange="window.updateScale(${sem.id}, ${course.id}, '${k}', this.value)"></div>`).join('')}</div><div id="cat-list-${course.id}"></div><button class="btn btn-main" style="background:#f0f7ff; color:var(--deep-blue); font-size:0.75em; margin-top:10px" onclick="window.addCat(${sem.id}, ${course.id})">+ Component</button></div>`;
+                document.getElementById(`c-list-${sem.id}`).appendChild(cDiv);
 
-            (c.categories || []).forEach(cat => {
-                const d = document.createElement('div');
-                d.className = 'category-section';
-                d.innerHTML = `
-                    <div class="category-header">
-                        <span class="category-name">${cat.name} (${cat.weight}%) - ${cat.currentPercent.toFixed(1)}%</span>
-                        <div>
-                            <button class="btn btn-main" style="padding:5px 15px; font-size:0.8em" onclick="window.addTask(${c.id},${cat.id})">+ Score</button>
-                            <button class="btn btn-danger" style="padding:5px 15px; font-size:0.8em; margin-left:5px" onclick="window.delCat(${c.id},${cat.id})">Remove</button>
-                        </div>
-                    </div>
-                    <div id="tasks-${cat.id}"></div>
-                `;
-                document.getElementById(`cats-${c.id}`).appendChild(d);
-
-                (cat.tasks || []).forEach(t => {
-                    const ti = document.createElement('div');
-                    ti.className = 'task-row';
-                    ti.innerHTML = `
-                        <input type="text" value="${t.label || ''}" placeholder="Task Name" onchange="window.updateT(${c.id},${cat.id},${t.id},'label',this.value)">
-                        <input type="number" value="${t.score}" placeholder="Score" onchange="window.updateT(${c.id},${cat.id},${t.id},'score',this.value)">
-                        <input type="number" value="${t.maxScore}" placeholder="Max" onchange="window.updateT(${c.id},${cat.id},${t.id},'maxScore',this.value)">
-                        <input type="number" value="${t.scoreIf !== null ? t.scoreIf : ''}" placeholder="What If?" onchange="window.updateT(${c.id},${cat.id},${t.id},'scoreIf',this.value)">
-                        <button class="btn btn-x" onclick="window.delTask(${c.id},${cat.id},${t.id})">✕</button>
-                    `;
-                    document.getElementById(`tasks-${cat.id}`).appendChild(ti);
+                (course.categories || []).forEach(cat => {
+                    const catDiv = document.createElement('div');
+                    catDiv.innerHTML = `<div style="display:flex; justify-content:space-between; margin-top:15px; cursor:pointer" onclick="window.tog('cat', ${sem.id}, ${course.id}, ${cat.id})"><span style="font-weight:700; font-size:0.9em"><span class="arrow ${cat.isCollapsed?'collapsed-icon':''}">▼</span>${cat.name} (${cat.weight}%) - <span style="color:var(--deep-blue)">${(cat.lastScore || 0).toFixed(2)}%</span></span><div style="display:flex; gap:10px; align-items:center"><button class="btn btn-main" style="padding:3px 8px; font-size:0.7em" onclick="event.stopPropagation(); window.addTask(${sem.id}, ${course.id}, ${cat.id})">+ Score</button><span class="del-btn" onclick="event.stopPropagation(); window.delCat(${sem.id}, ${course.id}, ${cat.id})">X</span></div></div><div id="t-list-${cat.id}" class="${cat.isCollapsed?'hidden':''}" style="margin-top:10px"></div>`;
+                    document.getElementById(`cat-list-${course.id}`).appendChild(catDiv);
+                    (cat.tasks || []).forEach(t => {
+                        const tr = document.createElement('div'); tr.className = 'task-row';
+                        tr.innerHTML = `<input type="text" value="${t.label}" placeholder="Task Name" onchange="window.updateT(${sem.id},${course.id},${cat.id},${t.id},'label',this.value)"><input type="number" value="${t.score}" placeholder="Score" onchange="window.updateT(${sem.id},${course.id},${cat.id},${t.id},'score',this.value)"><input type="number" value="${t.maxScore}" placeholder="Max" onchange="window.updateT(${sem.id},${course.id},${cat.id},${t.id},'maxScore',this.value)"><input type="number" value="${t.scoreIf ?? ''}" placeholder="What If?" onchange="window.updateT(${sem.id},${course.id},${cat.id},${t.id},'scoreIf',this.value)"><button class="btn" style="background:#ffe4e9; color:#e91e63" onclick="window.delTask(${sem.id},${course.id},${cat.id},${t.id})">X</button>`;
+                        document.getElementById(`t-list-${cat.id}`).appendChild(tr);
+                    });
                 });
             });
         });
-        document.getElementById('main-gpa').innerText = tc>0?(tg/tc).toFixed(3):"0.000";
-        document.getElementById('whatif-gpa').innerText = tc>0?(tgi/tc).toFixed(3):"0.000";
-        document.getElementById('stats-summary').innerText = `Courses: ${courses.length} | Credits: ${tc}`;
+        document.getElementById('total-courses').innerText = tCourses; 
+        document.getElementById('total-credits').innerText = totalCr;
+        document.getElementById('cum-gpa').innerText = totalCr>0 ? (totalGPA_Sum/totalCr).toFixed(2) : "0.00";
+        document.getElementById('cum-if-gpa').innerText = totalCr>0 ? (totalIfGPA_Sum/totalCr).toFixed(2) : "0.00";
     }
 </script>
 </body>
