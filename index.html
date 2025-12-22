@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPA Tracker Cloud - Final Smooth</title>
+<title>GPA Tracker Cloud - Ultimate Version</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     :root {
@@ -34,21 +34,33 @@
         background: var(--white); border-radius: 30px; padding: 30px;
         box-shadow: var(--shadow); margin-bottom: 30px; border: 2px solid var(--soft-blue);
     }
+
+    /* Auth Styling */
     .auth-container { text-align: center; }
     .auth-container input {
         padding: 12px 20px; border-radius: 15px; border: 2px solid var(--soft-blue);
         margin: 5px; outline: none; width: 220px; font-family: 'Quicksand';
     }
 
+    /* Header Academic Results - SIÊU TO */
     .result-card { border: 2px solid var(--accent-blue); text-align: center; }
+    .result-header-big {
+        font-size: 1.5em; 
+        font-weight: 800;
+        color: var(--deep-blue);
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
     .gpa-group { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0; }
     .gpa-box {
         background: var(--soft-blue); padding: 20px; border-radius: 20px;
-        min-width: 160px; border: 2px dashed var(--accent-blue);
+        min-width: 180px; border: 2px dashed var(--accent-blue);
     }
-    .gpa-box h4 { margin: 0 0 5px 0; color: var(--text-sub); font-size: 0.8em; }
-    .gpa-box span { font-size: 2em; font-weight: 700; color: var(--deep-blue); }
+    .gpa-box h4 { margin: 0 0 5px 0; color: var(--text-sub); font-size: 0.9em; text-transform: uppercase; }
+    .gpa-box span { font-size: 2.5em; font-weight: 800; color: var(--deep-blue); }
 
+    /* Input Area */
     .add-box { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
     .input-wrapper { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
     .input-wrapper label { font-weight: 700; font-size: 0.75em; color: var(--deep-blue); margin: 0 0 8px 5px; }
@@ -57,39 +69,34 @@
         outline: none; font-family: 'Quicksand';
     }
 
+    /* Course Styling */
     .course-item { background: var(--white); border-radius: 25px; margin-bottom: 25px; box-shadow: var(--shadow); overflow: hidden; }
-    .course-top { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .course-title { font-weight: 700; color: var(--deep-blue); font-size: 1.2em; display: flex; align-items: center; gap: 10px; }
+    .course-top { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: #fff; transition: 0.2s; }
+    .course-top:hover { background: #fafcff; }
+    .course-title { font-weight: 700; color: var(--deep-blue); font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
     .course-title::before { content: '▼'; font-size: 0.7em; transition: 0.3s; }
     .is-collapsed .course-title::before { transform: rotate(-90deg); }
 
     .course-summary-bar {
         background: var(--bg-blue); margin: 0 30px 20px; padding: 15px 25px; border-radius: 15px;
-        display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.9em; font-weight: 600;
+        display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 1em; font-weight: 700;
     }
 
-    .category-section {
-        background: #fdfdfe; border: 1.5px solid #f0f4f8; border-radius: 20px;
-        padding: 20px; margin: 0 30px 20px;
-    }
+    /* Category & Tasks */
+    .category-section { background: #fdfdfe; border: 1.5px solid #f0f4f8; border-radius: 20px; padding: 20px; margin: 0 30px 20px; }
     .category-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .category-name { font-weight: 700; color: var(--deep-blue); }
+    .category-name { font-weight: 700; color: var(--deep-blue); font-size: 1.1em; }
 
-    .task-row {
-        display: grid; grid-template-columns: 3fr 1fr 1fr 1.5fr 40px;
-        gap: 12px; margin-bottom: 10px; align-items: center;
-    }
-    .task-row input {
-        padding: 10px 15px; border-radius: 12px; border: 1.5px solid var(--soft-blue);
-        font-family: 'Quicksand'; font-size: 0.95em; outline: none; transition: 0.2s;
-    }
+    .task-row { display: grid; grid-template-columns: 3fr 1fr 1fr 1.5fr 45px; gap: 12px; margin-bottom: 10px; align-items: center; }
+    .task-row input { padding: 10px 15px; border-radius: 12px; border: 1.5px solid var(--soft-blue); font-family: 'Quicksand'; outline: none; }
     .task-row input:focus { border-color: var(--accent-blue); background: #faffff; }
     
+    /* Buttons */
     .btn { border: none; border-radius: 12px; padding: 10px 20px; font-family: 'Quicksand'; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .btn-main { background: var(--accent-blue); color: white; }
     .btn-outline { background: var(--soft-blue); color: var(--deep-blue); }
     .btn-danger { background: var(--danger); color: var(--danger-text); }
-    .btn-x { background: var(--danger); color: var(--danger-text); padding: 8px; border-radius: 10px; line-height: 1; }
+    .btn-x { background: var(--danger); color: var(--danger-text); padding: 8px; border-radius: 10px; line-height: 1; display: flex; justify-content: center; }
     
     .hidden { display: none !important; }
 </style>
@@ -98,7 +105,7 @@
 
 <div class="container">
     <div id="auth-section" class="card auth-container">
-        <h2 style="color:var(--deep-blue)">GPA Tracker</h2>
+        <h2 style="color:var(--deep-blue)">GPA Tracker Cloud</h2>
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Password">
         <div style="margin-top:20px">
@@ -109,23 +116,23 @@
 
     <div id="main-app" class="hidden">
         <div style="text-align:right; margin-bottom:10px">
-            <span id="user-email" style="font-size:0.8em; color:var(--text-sub)"></span>
+            <span id="user-email" style="font-size:0.85em; color:var(--text-sub); font-weight: 600;"></span>
             <button class="btn btn-danger" style="padding:5px 12px; font-size:0.75em; margin-left:10px" id="logoutBtn">Logout</button>
         </div>
 
         <div class="card result-card">
-            <div style="font-weight:800; color:var(--deep-blue); letter-spacing:2px; font-size: 1.5em; margin-bottom: 20px;">ACADEMIC RESULTS</div>
+            <div class="result-header-big">Academic Results</div>
             <div class="gpa-group">
                 <div class="gpa-box"><h4>Current GPA</h4><span id="main-gpa">0.000</span></div>
                 <div class="gpa-box"><h4>What-If GPA</h4><span id="whatif-gpa">0.000</span></div>
             </div>
-            <div style="font-weight:600; color:var(--text-sub)" id="stats-summary">Courses: 0 | Credits: 0</div>
+            <div style="font-weight:700; color:var(--text-sub); font-size: 1.1em;" id="stats-summary">Courses: 0 | Credits: 0</div>
         </div>
 
         <div class="card add-box">
             <div class="input-wrapper">
                 <label>COURSE NAME</label>
-                <input type="text" id="newCourseName" placeholder="e.g. Calculus">
+                <input type="text" id="newCourseName" placeholder="e.g. Data Structures">
             </div>
             <div class="input-wrapper" style="flex: 0.2; min-width:80px">
                 <label>CREDITS</label>
@@ -191,12 +198,12 @@
     };
     document.getElementById('addCourseBtn').onclick = window.addNewCourse;
 
-    window.resetAll = () => confirm('Dọn sạch tất cả dữ liệu môn học?') && (courses = [], sync());
+    window.resetAll = () => confirm('Clean up all course data?') && (courses = [], sync());
 
     window.addCat = (cId) => {
-        const name = prompt('Tên thành phần (ví dụ: Midterm):');
-        const w = parseFloat(prompt('Trọng số % (ví dụ: 30):'));
-        if(name && w) {
+        const name = prompt('Component Name (e.g. Midterm):');
+        const w = parseFloat(prompt('Weight % (e.g. 30):'));
+        if(name && !isNaN(w)) {
             const c = courses.find(x => x.id === cId);
             if(!c.categories) c.categories = [];
             c.categories.push({ id: Date.now(), name, weight: w, tasks: [] });
@@ -213,14 +220,14 @@
 
     window.updateT = (cId, catId, tId, f, v) => {
         const t = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.find(x => x.id === tId);
-        if (f === 'scoreIf') t[f] = v !== '' ? parseFloat(v) : null;
-        else if (f === 'label') t[f] = v;
-        else t[f] = v !== '' ? parseFloat(v) : 0;
+        if (f === 'label') t[f] = v;
+        else if (f === 'scoreIf') t[f] = v === '' ? null : parseFloat(v);
+        else t[f] = v === '' ? 0 : parseFloat(v);
         sync();
     };
 
-    window.delCourse = (id) => confirm('Xóa môn học này?') && (courses = courses.filter(c => c.id !== id), sync());
-    window.delCat = (cId, catId) => confirm('Xóa mục này?') && (courses.find(c => c.id === cId).categories = courses.find(c => c.id === cId).categories.filter(ca => ca.id !== catId), sync());
+    window.delCourse = (id) => confirm('Delete course?') && (courses = courses.filter(c => c.id !== id), sync());
+    window.delCat = (cId, catId) => confirm('Delete category?') && (courses.find(c => c.id === cId).categories = courses.find(c => c.id === cId).categories.filter(ca => ca.id !== catId), sync());
     window.delTask = (cId, catId, tId) => (courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks = courses.find(c => c.id === cId).categories.find(ca => ca.id === catId).tasks.filter(t => t.id !== tId), sync());
     window.tog = (id) => { const c = courses.find(x => x.id === id); c.isCollapsed = !c.isCollapsed; renderAll(); };
 
@@ -238,13 +245,15 @@
             (c.categories || []).forEach(cat => {
                 let s=0, si=0, m=0;
                 (cat.tasks || []).forEach(t => { 
-                    s += (t.score || 0); 
-                    m += (t.maxScore || 0); 
-                    si += (t.scoreIf !== null) ? t.scoreIf : (t.score || 0); 
+                    const sc = parseFloat(t.score) || 0;
+                    const mx = parseFloat(t.maxScore) || 0;
+                    s += sc; m += mx;
+                    si += (t.scoreIf !== null && t.scoreIf !== undefined) ? parseFloat(t.scoreIf) : sc;
                 });
                 const catAvg = m > 0 ? (s/m)*100 : 0;
+                const catIfAvg = m > 0 ? (si/m)*100 : 0;
                 curWS += catAvg * (cat.weight/100);
-                ifWS += (m > 0 ? (si/m)*100 : 0) * (cat.weight/100);
+                ifWS += catIfAvg * (cat.weight/100);
                 totW += cat.weight;
                 cat.currentPercent = catAvg;
             });
@@ -260,17 +269,17 @@
                 <div class="course-top" onclick="window.tog(${c.id})">
                     <div class="course-title">${c.name}</div>
                     <div style="display:flex; gap:10px; align-items:center">
-                        <span style="font-size:0.8em; color:var(--text-sub); font-weight:700">CREDITS: <span style="background:var(--soft-blue); padding:2px 8px; border-radius:5px; color:var(--deep-blue)">${c.credits}</span></span>
+                        <span style="font-size:0.85em; color:var(--text-sub); font-weight:700">CREDITS: <span style="background:var(--soft-blue); padding:3px 10px; border-radius:8px; color:var(--deep-blue)">${c.credits}</span></span>
                         <button class="btn btn-danger" style="padding:4px 12px; font-size:0.7em" onclick="event.stopPropagation(); window.delCourse(${c.id})">Delete</button>
                     </div>
                 </div>
                 <div class="${c.isCollapsed?'hidden':''}">
                     <div class="course-summary-bar">
-                        <div><div style="color:var(--text-sub); font-size:0.75em">ACTUAL</div>${p.toFixed(1)}% | Grade: ${l} | GPA: ${g.toFixed(2)}</div>
-                        <div style="text-align:right"><div style="color:var(--deep-blue); font-size:0.75em">WHAT-IF</div>${pi.toFixed(1)}% | Grade: ${li} | GPA: ${gi.toFixed(2)}</div>
+                        <div><div style="color:var(--text-sub); font-size:0.75em; font-weight:700">ACTUAL</div>${p.toFixed(1)}% | Grade: ${l} | GPA: ${g.toFixed(2)}</div>
+                        <div style="text-align:right"><div style="color:var(--deep-blue); font-size:0.75em; font-weight:700">WHAT-IF</div>${pi.toFixed(1)}% | Grade: ${li} | GPA: ${gi.toFixed(2)}</div>
                     </div>
                     <div id="cats-${c.id}"></div>
-                    <div style="padding: 0 30px 25px;"><button class="btn btn-outline" style="width:100%" onclick="window.addCat(${c.id})">+ Add Component</button></div>
+                    <div style="padding: 0 30px 25px;"><button class="btn btn-outline" style="width:100%; border-radius:15px;" onclick="window.addCat(${c.id})">+ Add Component</button></div>
                 </div>
             `;
             container.prepend(card);
@@ -295,9 +304,9 @@
                     ti.className = 'task-row';
                     ti.innerHTML = `
                         <input type="text" value="${t.label || ''}" placeholder="Task Name" onchange="window.updateT(${c.id},${cat.id},${t.id},'label',this.value)">
-                        <input type="number" value="${t.score || ''}" placeholder="Score" onchange="window.updateT(${c.id},${cat.id},${t.id},'score',this.value)">
-                        <input type="number" value="${t.maxScore || ''}" placeholder="Max" onchange="window.updateT(${c.id},${cat.id},${t.id},'maxScore',this.value)">
-                        <input type="number" value="${t.scoreIf??''}" placeholder="What If?" onchange="window.updateT(${c.id},${cat.id},${t.id},'scoreIf',this.value)">
+                        <input type="number" value="${t.score}" placeholder="Score" onchange="window.updateT(${c.id},${cat.id},${t.id},'score',this.value)">
+                        <input type="number" value="${t.maxScore}" placeholder="Max" onchange="window.updateT(${c.id},${cat.id},${t.id},'maxScore',this.value)">
+                        <input type="number" value="${t.scoreIf !== null ? t.scoreIf : ''}" placeholder="What If?" onchange="window.updateT(${c.id},${cat.id},${t.id},'scoreIf',this.value)">
                         <button class="btn btn-x" onclick="window.delTask(${c.id},${cat.id},${t.id})">✕</button>
                     `;
                     document.getElementById(`tasks-${cat.id}`).appendChild(ti);
