@@ -23,7 +23,19 @@
     .btn-logout { background: #ffe4e9; color: #e91e63; border: none; padding: 5px 15px; border-radius: 12px; cursor: pointer; font-family: 'Quicksand'; font-weight: 700; font-size: 0.8em; }
 
     .academic-frame { border: 2px solid var(--accent-blue); border-radius: 40px; padding: 25px; position: relative; margin-bottom: 40px; background: white; text-align: center; }
-    .academic-title { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); background: white; padding: 0 20px; font-weight: 800; color: var(--deep-blue); letter-spacing: 1px; font-size: 1.2em; }
+    .academic-title { 
+    position: absolute; 
+    top: -15px; /* Căn chỉnh cho chữ nằm giữa đường viền */
+    left: 50%; 
+    transform: translateX(-50%); 
+    background: var(--bg-blue); /* Sử dụng màu nền của trang thay vì màu trắng */
+    padding: 0 15px; /* Khoảng trống vừa đủ để đường kẻ không chạm vào chữ */
+    font-weight: 800; 
+    color: var(--deep-blue); 
+    letter-spacing: 1px; 
+    font-size: 1.1em; /* Giảm size một chút cho tinh tế */
+    white-space: nowrap; /* Giữ chữ trên một hàng */
+    }
     
     .view-selector { margin-bottom: 20px; border: 1.5px solid var(--accent-blue); padding: 8px 15px; border-radius: 15px; font-family: 'Quicksand'; font-weight: 700; color: var(--deep-blue); outline: none; background: var(--bg-blue); cursor: pointer; }
 
