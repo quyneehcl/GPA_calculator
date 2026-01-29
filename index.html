@@ -76,6 +76,10 @@
             <h2 id="auth-title">Login</h2>
             <input type="email" id="login-email" placeholder="Email">
             <input type="password" id="login-password" placeholder="Password">
+            
+            <p style="text-align: right; margin-top: -5px;">
+                <span id="forgot-password" style="color: var(--text-sub); cursor: pointer; font-size: 0.75em; font-weight: 600;">Forgot Password?</span>
+            </p>
             <button class="btn btn-main" style="width: 100%; margin-top: 15px;" id="auth-btn">Sign In</button>
             <p style="font-size: 0.85em; margin-top: 20px;">
                 <span id="toggle-text">Don't have an account?</span> 
@@ -116,7 +120,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
@@ -185,7 +189,21 @@
         const n = prompt("Course Name: (e.g. Calculus I)"), c = parseFloat(prompt("Credits: (e.g. 3)"));
         if(n) { const sem = semesters.find(x => x.id === sId); (sem.courses = sem.courses || []).push({ id: Date.now(), name: n, credits: c || 0, categories: [], isCollapsed: false, showScale: false, thres: {...DEFAULT_SCALE} }); sync(); }
     };
-
+    
+    document.getElementById('forgot-password').onclick = async () => {
+        const email = document.getElementById('login-email').value;
+        if (!email) {
+            alert("Please enter your email in the blank field before clicking ‘Forgot Password’!");
+            return;
+        }
+        try {
+            await sendPasswordResetEmail(auth, email);
+            alert("I’ve sent you a password reset link to your email. Check your inbox (or spam folder)!");
+        } catch (e) {
+            alert("Something went wrong: " + e.message);
+        }
+    };
+    
     window.renameSem = (sId) => {
         const s = semesters.find(x => x.id === sId);
         const n = prompt("Edit Semester Name: (e.g. Year 1 Spring)", s.name);
