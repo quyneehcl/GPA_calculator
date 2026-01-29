@@ -202,7 +202,7 @@
     };
 
     window.addCat = (sId, cId) => {
-        const n = prompt("Component:"), w = parseFloat(prompt("Weight %:"));
+        const n = prompt("Component: (e.g. Attendance, Midterm, ...)"), w = parseFloat(prompt("Weight %:"));
         if(n && w) { const course = semesters.find(s => s.id === sId).courses.find(c => c.id === cId); (course.categories = course.categories || []).push({ id: Date.now(), name: n, weight: w, tasks: [], isCollapsed: false }); sync(); }
     };
     window.addTask = (sId, cId, catId) => {
