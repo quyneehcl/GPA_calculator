@@ -280,14 +280,16 @@
             (sem.courses || []).forEach(course => {
                 let actScore_Pct=0, ifScore_Pct=0, weightSum=0;
                 (course.categories || []).forEach(cat => {
-                    let s_act=0, s_if=0, m_total=0;
+                    let s_act=0, s_if=0, task_count=0;
                     (cat.tasks || []).forEach(t => { 
-                        s_act += (t.score || 0); m_total += (t.maxScore || 100); 
-                        s_if += (t.scoreIf !== null && t.scoreIf !== undefined) ? t.scoreIf : (t.score || 0); 
+                        s_act += (t.score || 0) / (t.maxScore || 100) * 100;
+                        s_if += ((t.scoreIf !== null && t.scoreIf !== undefined) ? t.scoreIf : (t.score || 0)) / (t.maxScore || 100) * 100;
+                        task_count++;
                     });
-                    const catPct = (m_total > 0 ? (s_act/m_total)*100 : 0);
+                    const catPct = task_count > 0 ? s_act / task_count : 0;
+                    const catIfPct = task_count > 0 ? s_if / task_count : 0;
                     cat.lastScore = catPct * (cat.weight/100); actScore_Pct += cat.lastScore;
-                    ifScore_Pct += (m_total > 0 ? (s_if/m_total)*100 : 0) * (cat.weight/100); weightSum += cat.weight;
+                    ifScore_Pct += catIfPct * (cat.weight/100); weightSum += cat.weight;
                 });
                 const finalAct = weightSum > 0 ? actScore_Pct / (weightSum/100) : 0;
                 const finalIf = weightSum > 0 ? ifScore_Pct / (weightSum/100) : 0;
