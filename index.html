@@ -64,6 +64,7 @@
     .editable-text:hover { text-decoration: underline; color: #333; }
 
     .dean-badge { background:#fff4cc; color:#a67c00; border-radius:12px; padding:2px 10px; font-size:0.7em; font-weight:700; margin-bottom:4px; display:inline-block; }
+    .dean-badge.badge-hidden { visibility: hidden; }
 
     .scale-editor { background: #fff; border: 1.5px dashed var(--accent-blue); border-radius: 20px; padding: 20px; margin: 15px 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 15px; }
     .scale-item { display: flex; flex-direction: column; align-items: center; font-size: 0.75em; font-weight: 700; }
@@ -161,8 +162,8 @@
             </select>
 
             <div class="result-section">
-                <div class="result-box"><h4>GPA</h4><div class="dean-badge hidden" id="gpa-dean-badge">🏅 Dean's List</div><div class="gpa-val" id="cum-gpa">0.00</div></div>
-                <div class="result-box"><h4>What-If GPA</h4><div class="dean-badge hidden" id="if-gpa-dean-badge">🏅 Dean's List</div><div class="gpa-val" id="cum-if-gpa">0.00</div></div>
+                <div class="result-box"><h4>GPA</h4><div class="dean-badge badge-hidden" id="gpa-dean-badge">🏅 Dean's List</div><div class="gpa-val" id="cum-gpa">0.00</div></div>
+                <div class="result-box"><h4>What-If GPA</h4><div class="dean-badge badge-hidden" id="if-gpa-dean-badge">🏅 Dean's List</div><div class="gpa-val" id="cum-if-gpa">0.00</div></div>
             </div>
             <div style="font-weight: 700; color: #a0b1c5; margin-top: 10px;">
                 Courses: <span id="total-courses">0</span> | Credits: <span id="total-credits">0</span>
@@ -410,8 +411,8 @@
         document.getElementById('cum-if-gpa').innerText = semIfGPA.toFixed(2);
 
         const isSpecificSemester = currentView !== "all";
-        document.getElementById('gpa-dean-badge').classList.toggle('hidden', !(isSpecificSemester && totalCr>0 && semGPA >= DEAN_LIST_GPA_THRESHOLD));
-        document.getElementById('if-gpa-dean-badge').classList.toggle('hidden', !(isSpecificSemester && totalCr>0 && semIfGPA >= DEAN_LIST_GPA_THRESHOLD));
+        document.getElementById('gpa-dean-badge').classList.toggle('badge-hidden', !(isSpecificSemester && totalCr>0 && semGPA >= DEAN_LIST_GPA_THRESHOLD));
+        document.getElementById('if-gpa-dean-badge').classList.toggle('badge-hidden', !(isSpecificSemester && totalCr>0 && semIfGPA >= DEAN_LIST_GPA_THRESHOLD));
     }
 </script>
 </body>
